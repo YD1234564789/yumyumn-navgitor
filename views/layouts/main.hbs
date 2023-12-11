@@ -3,9 +3,201 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/391b09ed9d.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/public/style.css">
+  <script src="/public/maini.js"></script>
+  <title>YumYum導航</title>
 </head>
 <body>
-  {{body}}
+
+<div style="display: block;">
+  <div style="padding: 16px;">
+    <label for="restaurantType">餐廳類別：</label>
+    <select id="restaurantType">
+      <option value="" title="顯示所有類別">全部</option>
+      <option value="咖啡廳" title="以咖啡、茶和輕食為主的場所">咖啡廳</option>
+      <option value="燒烤店" title="以烤肉、燒烤為主的餐廳">燒烤店</option>
+      <option value="甜點店" title="專門提供各種甜點和甜品的店鋪">甜點店</option>
+      <option value="速食餐廳" title="提供快速餐點的餐廳，如漢堡店、炸雞店等">速食餐廳</option>
+      <option value="日式料理" title="壽司店、拉麵店、刺身店等">日式料理</option>
+      <option value="義式料理" title="義大利餐廳，披薩、義大利麵等">義式料理</option>
+      <option value="中式料理" title="中國各省的特色菜餚，如川菜、粤菜、湘菜等">中式料理</option>
+      <option value="西式料理" title="法國、德國、西班牙等國的菜式">西式料理</option>
+      <option value="印度料理" title="印度特色的咖哩、香料風味的菜餚">印度料理</option>
+      <option value="泰式料理" title="泰國風味的料理，有辣味、酸甜味等">泰式料理</option>
+      <option value="素食餐廳" title="提供素食或純素食選擇的餐廳">素食餐廳</option>
+      <option value="海鮮餐廳" title="以各種海鮮菜餚為主">海鮮餐廳</option>
+      <option value="墨西哥料理" title="包括塔可、墨西哥捲餅等">墨西哥料理</option>
+    </select>
+
+    <label for="searchDistance">選擇搜索距離：</label>
+    <select id="searchDistance">
+      <option value="100" title="100 公尺">100 公尺</option>
+      <option value="300" title="300 公尺">300 公尺</option>
+      <option value="600" title="600 公尺">600 公尺</option>
+      <option value="1000" title="1 公里">1 公里</option>
+      <option value="3000" title="3 公里">3 公里</option>
+    </select>
+
+    <label for="ratingLevel">評分：</label>
+    <select id="ratingLevel">
+      <option value="1" title="1分以上">1分以上</option>
+      <option value="2" title="2分以上">2分以上</option>
+      <option value="3" title="3分以上">3分以上</option>
+      <option value="4" title="4分以上">4分以上</option>
+    </select>
+
+    <label for="priceLevel">價格等級：</label>
+    <input type="range" id="priceLevel" name="priceLevel" min="0" max="4" step="1" value="1" oninput="updatePriceLevel()">
+    <span id="priceOutput">1</span>
+
+    <button onclick="searchRestaurants()">搜尋餐廳</button>
+  </div>
+  <div id="map" style="width: 100%; height:100vh;">
+  </div>
+</div>
+
+<script>
+  let map, pos, ratingLevel, infoWindow
+  let markers = []
+ 
+
+    // 初始化地圖
+    async function initMap () {
+      const { Map } = await google.maps.importLibrary("maps")
+      map = new Map(document.getElementById("map"), {
+        center: { lat: 23.553118, lng: 121.0211024 },
+        zoom: 7
+      })
+      navigator.geolocation.getCurrentPosition(function (position) {
+        pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        }
+        map.setCenter(pos)
+        map.setZoom(16)
+      })
+
+      infoWindow = new google.maps.InfoWindow()
+
+      // 創建location按鈕與功能
+      const locationButton = document.createElement("button")
+
+      locationButton.textContent = "我的位置"
+      locationButton.classList.add("custom-map-control-button")
+      map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton)
+      locationButton.addEventListener("click", () => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+              }
+              infoWindow.setPosition(pos)
+              infoWindow.setContent("目前位置")
+              infoWindow.open(map)
+              map.setCenter(pos)
+              map.setZoom(17)
+            },
+            () => {
+              handleLocationError(true, infoWindow, map.getCenter())
+            }
+          )
+        } else {
+          handleLocationError(false, infoWindow, map.getCenter())
+        }
+      })
+    }
+
+    // 未授權定位錯誤處理
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+      infoWindow.setPosition(pos)
+      infoWindow.setContent(
+        browserHasGeolocation?"Error: The Geolocation service failed." : "Error: Your browser doesn't support geolocation."
+      )
+      infoWindow.open(map)
+    }
+
+    // 更新選取的價格等級
+    function updatePriceLevel() {
+      const selectedPriceLevel = document.getElementById('priceLevel').value
+      document.getElementById('priceOutput').textContent = selectedPriceLevel
+      }
+
+    // 搜索處理
+    function searchRestaurants() {
+      // 清除前一次標記
+      clearMarkers()
+      //取得餐廳類別、距離、價格等級
+      const selectedType = document.getElementById("restaurantType").value
+      const selectDistance = parseInt(document.getElementById("searchDistance").value)
+      const priceLevel = parseInt(document.getElementById("priceLevel").value)
+      ratingLevel = parseInt(document.getElementById("ratingLevel").value)
+      console.log("priceLevel", priceLevel)
+      console.log("ratingLevel", ratingLevel)
+      // 設定搜索條件
+      const placesService = new google.maps.places.PlacesService(map)
+      placesService.nearbySearch({
+        keyword: selectedType + "餐廳",
+        types: ['food'],
+        location: pos,
+        radius: selectDistance,
+        openNow: true,
+        minPriceLevel: 0,
+        maxPriceLevel: priceLevel
+      }, 
+      (results, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          // 價格與評分篩選並以高評價排序
+          const filteredResults = results.filter(result =>  result.rating >= ratingLevel)
+          .sort((a, b) => b.rating - a.rating)
+
+          addMarkersAndInfoWindows(filteredResults)
+          
+          console.log(filteredResults)
+        } else console.log('無搜尋結果')
+      })
+    }
+    // 新增marker跟infoWindow
+    function addMarkersAndInfoWindows(places) {
+      for (i = 0; i < places.length; i++) {
+        const place = places[i]
+        const marker = new google.maps.Marker({
+          map,
+          position: place.geometry.location,
+          title: place.name
+        })
+        marker.addListener("click", () => {
+          infoWindow.setContent(`<strong> ${place.name}</strong><br>${place.vicinity}<br>價位：${place.price_level}<br>分數：${place.rating} (${place.user_ratings_total}則評論)`)
+          infoWindow.open({
+            anchor: marker,
+            map
+          })
+        })
+        markers.push(marker)
+      }
+    }
+
+    function clearMarkers() {
+      if (map) {
+        for (i = 0; i < markers.length; i++) {
+          markers[i].setMap(null)
+        }
+        markers = []
+      }
+    }
+    
+</script>
+
+{{!-- google maps api --}}
+  <script async
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0WRVvYflSAKAnbroNbcjxmnpPwOfOOWk&callback=initMap&language=zh-TW&region=TW&v=weekly&libraries=places">
+  </script>
+  
+{{!-- bootstrap --}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
