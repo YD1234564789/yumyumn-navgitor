@@ -133,23 +133,32 @@ function clearMarkers() {
   markers = []
 }
 
+// 結果印出在右側
 function renderSearchResults(data) {
   const searchResult = document.getElementById('search-results')
   let html = ''
   data.forEach(place => {
     html += `
-      <div class="card">
-        <div class="card-body">
-          ${place.name}<br>
-          地址：${place.vicinity}<br>
-          價格：${place.price_level}<br>
-          評分：${place.rating}<br>
+      <div class="card text-dark  bg-light mb-1">
+        <div class="row g-0">
+          <div class="col-md-3 d-flex align-items-center justify-content-center" >
+            <img class="rounded" src="${place.photos[0].getUrl({ maxWidth: 150, maxHeight: 150 })}" style="max-height: 100%; max-width: 100%;">  
+          </div>
+          <div class="col-md-9">
+            <div class="card-header"><strong>${place.name}</strong></div>
+            <div class="card-body">
+              地址：${place.vicinity}<br>
+              價格：${place.price_level}<br>
+              評分：${place.rating} (${place.user_ratings_total}則評論)<br>
+            </div>
+          </div>
         </div>
       </div>
     `
   })
   searchResult.innerHTML =  html
 }
+
 
 // 顯示infowindow
 function showInfoWindow(place, marker) {

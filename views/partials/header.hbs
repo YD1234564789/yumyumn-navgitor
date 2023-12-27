@@ -1,8 +1,8 @@
-<div>
+<div class="border-bottom mb-1">
   <div class="d-flex justify-content-center" style="padding: 16px;">
     <form id="filterForm" onsubmit="event.preventDefault(); searchPlaces();">
       <label for="type">餐廳類別：</label>
-      <select id="type" name="type">
+      <select id="type" name="type" class="me-3">
         <option value="" title="顯示所有類別">全部</option>
         <option value="咖啡廳" title="以咖啡、茶和輕食為主的場所">咖啡廳</option>
         <option value="燒烤店" title="以烤肉、燒烤為主的餐廳">燒烤店</option>
@@ -20,7 +20,7 @@
       </select>
       
       <label for="distance">選擇搜索距離：</label>
-      <select id="distance" name="distance">
+      <select id="distance" name="distance" class="me-3">
         <option value="100" title="100 公尺">100 公尺</option>
         <option value="300" title="300 公尺">300 公尺</option>
         <option value="600" title="600 公尺">600 公尺</option>
@@ -29,7 +29,7 @@
       </select>
       
       <label for="rating">評分：</label>
-      <select id="rating" name="rating">
+      <select id="rating" name="rating" class="me-3">
         <option value="1" title="1分以上">1分以上</option>
         <option value="2" title="2分以上">2分以上</option>
         <option value="3" title="3分以上">3分以上</option>
@@ -37,8 +37,8 @@
       </select>
       
       <label for="priceLevel">價格等級：</label>
-      <input type="range" id="priceLevel" name="priceLevel" min="0" max="4" step="1" value="{{priceLevel}}" oninput="updatePriceLevel()">
-      <span id="priceOutput">{{priceLevel}}</span>
+      <input type="range" id="priceLevel" name="priceLevel" min="1" max="4" step="1" value="3" oninput="updatePriceLevel()">
+      <span id="priceOutput" class="me-3">3</span>
 
       <!-- 添加用戶位置欄位 -->
       <input type="hidden" id="latitude" name="latitude">
