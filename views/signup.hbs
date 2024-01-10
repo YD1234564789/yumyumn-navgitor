@@ -5,26 +5,26 @@
     </div>
     <form class="form-signup" action="/signup" method="POST" style="width: 100%;">
       <div class="form-floating mb-3">
-        <input type="text" id="name" name="name" class="form-control" placeholder="Name" required autofocus>
+        <input type="text" id="name" name="name" class="form-control" value="{{ name }}" placeholder="Name" required autofocus>
         <label class="form-label" for="name">Name</label>
       </div>
       <div class="form-floating mb-3">
-        <input type="text" id="email" name="email" class="form-control" placeholder="Email" required>
+        <input type="text" id="email" name="email" class="form-control" value="{{ email }}" placeholder="Email" required>
         <label class="form-label" for="email">Email</label>
       </div>
       <div class="form-floating mb-3">
-        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+        <input type="password" id="password" name="password" class="form-control"  value="{{ password }}" placeholder="Password" required>
         <label class="form-label" for="password">Password</label>
       </div>
       <div class="form-floating mb-3">
-        <input type="password" id="passwordCheck" name="passwordCheck" class="form-control" placeholder="Password Check"
+        <input type="password" id="passwordCheck" name="passwordCheck" class="form-control" value="{{ passwordCheck }}" placeholder="Password Check"
           required>
         <label class="form-label" for="passwordCheck">Password Check</label>
       </div>
       <div class="text-center">
         <button class="btn btn-primary btn-block" type="submit">Submit</button>
         <a href="/auth/google" class="btn btn-secondary btn-block">Google Login</a>
-        <a href="/signin" class="btn btn-outline-secondary">Sign In</a>
+        <a href="/login" class="btn btn-outline-secondary">Login</a>
       </div>
     </form>
   </div>

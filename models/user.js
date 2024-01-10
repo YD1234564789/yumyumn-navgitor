@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const userSchema = new Schema({
+  name: {
+    type: String,
+    require: true
+  },
   email: {
     type: String,
     require: true
@@ -8,6 +12,10 @@ const userSchema = new Schema({
   password: {
     type: String,
     require: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
   }
 })
 
