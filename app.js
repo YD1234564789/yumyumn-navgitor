@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const express = require('express')
+const session = require('express-session')
 const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
 const routes = require('./routes')
@@ -15,6 +16,11 @@ app.set('view engine', 'hbs')
 // 可解析POST表單內容 req.body
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
+app.use(session({
+  secret: 'ThisIsMySecret',
+  resave: false,
+  saveUninitialized: true
+}))
 // 增加可覆蓋的PUT DELETE方法
 app.use(methodOverride('_method'))
 app.use(routes)
