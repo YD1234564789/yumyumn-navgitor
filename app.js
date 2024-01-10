@@ -6,7 +6,17 @@ const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
 const routes = require('./routes')
 const app = express()
+const mongoose = require('mongoose')
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 const port = process.env.PORT || 3000
+const db = mongoose.connection
+
+db.on('error', () => {
+  console.log('mongodb error!')
+})
+db.once('open', () => {
+  console.log('mongodb connected!')
+})
 
 app.engine('hbs', exphbs.engine({ extname: '.hbs'}))
 app.set('view engine', 'hbs')
