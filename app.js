@@ -7,6 +7,7 @@ const session = require('express-session')
 const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
 const routes = require('./routes')
+const usePassport = require('.config/passport')
 const app = express()
 const port = process.env.PORT || 3000
 require('./config/mongoose')
@@ -21,6 +22,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
+usePassport(app)
 // 增加可覆蓋的PUT DELETE方法
 app.use(methodOverride('_method'))
 app.use(routes)
