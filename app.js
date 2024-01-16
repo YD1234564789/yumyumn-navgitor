@@ -7,7 +7,7 @@ const session = require('express-session')
 const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
 const routes = require('./routes')
-const usePassport = require('.config/passport')
+const usePassport = require('./config/passport')
 const app = express()
 const port = process.env.PORT || 3000
 require('./config/mongoose')
