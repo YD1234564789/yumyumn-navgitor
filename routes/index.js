@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
+const { authenticator } = require('../middleware/auth')
 const mapController = require('../controllers/map-controller')
 const userController = require('../controllers/user-controller')
 
@@ -12,6 +13,6 @@ router.post('/login', passport.authenticate('local', {
 router.get('/signup', userController.signupPage)
 router.post('/signup', userController.signup)
 router.get('/logout', userController.logout)
-router.get('/', (req, res) => res.render('index'))
+router.get('/', authenticator, (req, res) => res.render('index'))
 
 module.exports = router
