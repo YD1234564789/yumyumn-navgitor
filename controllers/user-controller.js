@@ -38,10 +38,8 @@ const userController = {
       .catch(err => console.log(err))
   },
   logout: (req, res) => {
-    req.logout(err => {
-      if (err) { return next(err) }
-      res.redirect('/login')
-    })
+    req.logout()
+    res.redirect('/login')
   } 
 }
 

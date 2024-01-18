@@ -3,7 +3,7 @@ let pos
 let service
 let markers = []
 let infowindow
-
+let highlightMarker = null
 // 初始化地圖
 async function initMap () {
   const { Map } = await google.maps.importLibrary("maps")
@@ -75,26 +75,27 @@ function updatePriceLevel () {
 }
 
 // 搜索功能
-  function searchPlaces() {
-    // 取得選擇的商家類別
-    const category = document.getElementById('type').value
-    const distance = parseInt(document.getElementById('distance').value)
-    const rating = parseInt(document.getElementById('rating').value)
-    const priceLevel = parseInt(document.getElementById('priceLevel').value)
-    const latitude = document.getElementById('latitude').value
-    const longitude = document.getElementById('longitude').value
-    const request = {
-      location: new google.maps.LatLng(latitude, longitude),
-      radius: distance,
-      type: 'restaurant',
-      keyword: `${ category } + 餐廳`,
-      minRating: rating,
-      minPriceLevel: '0',
-      maxPriceLevel: priceLevel,
-      openNow: true
-    }
-    service.nearbySearch(request, callback)
-  };
+function searchPlaces() {
+  // 取得選擇的商家類別
+  const category = document.getElementById('type').value
+  const distance = parseInt(document.getElementById('distance').value)
+  const rating = parseInt(document.getElementById('rating').value)
+  const priceLevel = parseInt(document.getElementById('priceLevel').value)
+  const latitude = document.getElementById('latitude').value
+  const longitude = document.getElementById('longitude').value
+  const request = {
+    location: new google.maps.LatLng(latitude, longitude),
+    radius: distance,
+    type: 'restaurant',
+    keyword: `${ category } + 餐廳`,
+    minRating: rating,
+    minPriceLevel: '0',
+    maxPriceLevel: priceLevel,
+    openNow: true
+  }
+  service.nearbySearch(request, callback)
+}
+
 // 處理後回傳結果
 function callback(results, status) {
   if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -102,11 +103,13 @@ function callback(results, status) {
     clearMarkers()
     console.log('results', results)
     // 加入marker和infowindow
-    results.forEach(place => {
+    results.forEach((place, i) => {
       const marker = new google.maps.Marker({
         position: place.geometry.location,
         map,
-        title: place.name
+        title: `${i + 1}. ${place.name}`,
+        label: `${i + 1}`,
+        placeId: place.place_id
       })
 
       marker.addListener('click', () => {
@@ -137,18 +140,18 @@ function clearMarkers() {
 function renderSearchResults(data) {
   const searchResult = document.getElementById('search-results')
   let html = ''
-  data.forEach(place => {
+  data.forEach((place, i) => {
     html += `
-      <div class="card text-dark  bg-light mb-1">
+      <div class="card text-dark  bg-light mb-1" onmouseover="highlight('${place.place_id}')">
         <div class="row g-0">
           <div class="col-md-3 d-flex align-items-center justify-content-center" >
             <img class="rounded" src="${place.photos[0].getUrl({ maxWidth: 150, maxHeight: 150 })}" style="max-height: 100%; max-width: 100%;">  
           </div>
           <div class="col-md-9">
-            <div class="card-header"><strong>${place.name}</strong></div>
+            <div id="place-name"class="card-header">${i + 1}.${place.name}</div>
             <div class="card-body">
               地址：${place.vicinity}<br>
-              價格：${place.price_level}<br>
+              價位：${place.price_level}<br>
               評分：${place.rating} (${place.user_ratings_total}則評論)<br>
             </div>
           </div>
@@ -167,4 +170,15 @@ function showInfoWindow(place, marker) {
     anchor: marker,
     map
   })
+}
+
+function highlight(placeId) {
+  const targetMarker = markers.find(marker => marker.placeId === placeId)
+  console.log('markerToHighlight', targetMarker)
+  // 如果找到了，並且不是目前高亮的 marker，就將地圖中心點移到該 marker
+  if (targetMarker && targetMarker !== highlightMarker) {
+    map.panTo(targetMarker.getPosition())
+    // map.setZoom(17)
+    highlightMarker = targetMarker
+  }
 }

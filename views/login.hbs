@@ -1,24 +1,29 @@
   <div class="row justify-content-center align-items-center" style="height: 600px">
-    <div class="col-md-6 shadow p-3 mb-5 bg-white rounded">
+    <div class="col-md-5 shadow-lg px-5 py-4 mb-5 bg-white rounded-3">
+
       <div class="mb-4 text-center">
-        <h1 class="h3 font-weight-normal mb-3">Sign In</h1>
+        <h1 class="h3 font-weight-normal mb-4 fw-bold">登入</h1>
       </div>
+
       <form class="form-login" action="/login" method="POST">
-        <div class="form-floating mb-3">
-          <input class="form-control" id="email" type="text" name="email" class="form-control" placeholder="Email"
+        <div class="mb-3">
+          <label class="form-label px-3 text-muted" for="email">信箱</label>
+          <input class="form-control rounded-pill bg-light" id="email" type="text" name="email" placeholder="name@mail.com"
             required autofocus>
-          <label class="form-label" for="email">Email</label>
         </div>
-        <div class="form-floating mb-3">
-          <input class="form-control" id="password" type="password" name="password" class="form-control"
-            placeholder="Password" required>
-          <label class="form-label" for="password">Password</label>
+        <div class="mb-4">
+          <label class="form-label px-3 text-muted" for="password">密碼</label>
+          <input class="form-control rounded-pill bg-light" id="password" type="password" name="password"required>
         </div>
+        <div class="d-grid gap-2 mb-4 ">
+          <button class="btn btn-primary btn-block fw-bold rounded-pill" type="submit">提交</button>
+        </div>
+        <hr>
         <div class="text-center">
-          <button class="btn btn-primary btn-block" type="submit">Submit</button>
-          <a href="/auth/google" class="btn btn-secondary btn-block">Google Login</a>
-          <a href="/signup" class="btn btn-outline-secondary">SignUp</a>
+          <a href="/auth/google" class="btn btn-secondary btn-block btn-sm">Google Login</a>
+          <a href="/signup" class="btn btn-outline-secondary btn-sm fw-bold">註冊</a>
         </div>
       </form>
+      
     </div>
   </div>

@@ -23,6 +23,12 @@ app.use(session({
   saveUninitialized: true
 }))
 usePassport(app)
+// 讓登入與用戶資料常駐，提供view做存取
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
+  next()
+})
 // 增加可覆蓋的PUT DELETE方法
 app.use(methodOverride('_method'))
 app.use(routes)

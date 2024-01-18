@@ -9,7 +9,7 @@
   <link rel="stylesheet" type="text/css" href="/style.css">
   <title>YumYum導航</title>
 </head>
-<body class="d-flex flex-column h-100 bg-light">
+<body class="d-flex flex-column h-100" {{#unless isAuthenticated}} style="background-image: url(https://img.freepik.com/free-photo/delicious-healthy-asian-food-gray-textured-background-with-copy-space_24972-1022.jpg?w=996&t=st=1705566580~exp=1705567180~hmac=8cf44e4f668108e3f9381440ee24249abd6b4c6bf6b9abff879a60309c9a78bd); background-repeat: no-repeat;background-size: cover; background-position: center center; height: 100vh; "{{/unless}}>
     {{> header}}
   <div class="container h-100">
     {{{ body }}}

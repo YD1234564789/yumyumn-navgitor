@@ -1,6 +1,16 @@
-{{#if user}}
-<div class="border-bottom mb-1">
-  <div class="d-flex justify-content-center" style="padding: 16px;">
+<div id="header" {{#if isAuthenticated}} class="border-bottom mb-1" style="background-color: #fbf9f1
+{{else}}
+{{!-- class="shadow-sm" --}}
+"{{/if}}>
+  <nav class="navbar d-flex justify-content-between" style="padding: 10px 30px;">
+
+    <a class="navbar-brand p-0" href="/">
+      <img src="/image/logot.png" alt="" width="62" 
+      class="d-inline-block ">
+      Navigator
+    </a>
+
+    {{#if isAuthenticated}}
     <form id="filterForm" onsubmit="event.preventDefault(); searchPlaces();">
       <label for="type">餐廳類別：</label>
       <select id="type" name="type" class="me-3">
@@ -45,8 +55,12 @@
       <input type="hidden" id="latitude" name="latitude">
       <input type="hidden" id="longitude" name="longitude">
       
-      <button type="submit">搜尋餐廳</button>
+      <button class="btn btn-primary btn-sm"type="submit">搜尋餐廳</button>
     </form>
-  </div>
+
+    <a href="/logout" class="btn btn-secondary btn-sm">登出</a>
+    {{else}}
+    <a href="/signup" class="btn btn-outline-secondary btn-sm fw-bold">註冊</a>
+    {{/if}}
+  </nav>
 </div>
-{{/if}}
