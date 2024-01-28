@@ -1,6 +1,4 @@
-<div id="header" {{#if isAuthenticated}} class="border-bottom mb-1" style="background-color: #fbf9f1
-{{else}}
-{{!-- class="shadow-sm" --}}
+<div id="header" {{#if isAuthenticated}} class="border-bottom mb-1" style="background-image: url(https://img.freepik.com/free-photo/delicious-healthy-asian-food-gray-textured-background-with-copy-space_24972-1022.jpg?w=996&t=st=1705566580~exp=1705567180~hmac=8cf44e4f668108e3f9381440ee24249abd6b4c6bf6b9abff879a60309c9a78bd); background-repeat: no-repeat;background-size: cover; background-position: center 40% ;
 "{{/if}}>
   <nav class="navbar d-flex justify-content-between" style="padding: 10px 30px;">
 
@@ -9,7 +7,6 @@
       class="d-inline-block ">
       Navigator
     </a>
-
     {{#if isAuthenticated}}
     <form id="filterForm" onsubmit="event.preventDefault(); searchPlaces();">
       <label for="type">餐廳類別：</label>

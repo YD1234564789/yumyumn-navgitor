@@ -37,6 +37,3 @@ app.use(routes)
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)
 })
-
-//google map功能>登入>(金流)
-// Maps JavaScript API  取得目前位置與地圖 

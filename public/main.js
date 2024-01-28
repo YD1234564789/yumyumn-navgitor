@@ -22,7 +22,6 @@ async function initMap () {
     document.getElementById('latitude').value = pos.lat
     document.getElementById('longitude').value = pos.lng
   })
-  service = new google.maps.places.PlacesService(map)
   infowindow = new google.maps.InfoWindow()
   
   google.maps.event.addListener(map, 'click', function () {
@@ -93,12 +92,14 @@ function searchPlaces() {
     maxPriceLevel: priceLevel,
     openNow: true
   }
+  service = new google.maps.places.PlacesService(map)
   service.nearbySearch(request, callback)
+
 }
 
 // 處理後回傳結果
 function callback(results, status) {
-  if (status === google.maps.places.PlacesServiceStatus.OK) {
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
     // 清除先前的marker和infoWindow
     clearMarkers()
     console.log('results', results)
@@ -122,8 +123,9 @@ function callback(results, status) {
     renderSearchResults(results)
   } else {
     // 如無搜索結果
-    const searchResult = document.getElementById('search-results');
-    searchResult.innerHTML = '此條件無搜索結果';
+    console.log('status', status)
+    const searchResult = document.getElementById('search-results')
+    searchResult.innerHTML = '此條件無搜索結果'
   }
 }
 
@@ -147,12 +149,17 @@ function renderSearchResults(data) {
           <div class="col-md-3 d-flex align-items-center justify-content-center" >
             <img class="rounded" src="${place.photos[0].getUrl({ maxWidth: 150, maxHeight: 150 })}" style="max-height: 100%; max-width: 100%;">  
           </div>
-          <div class="col-md-9">
+          <div class="col-md-9 ">
             <div id="place-name"class="card-header">${i + 1}.${place.name}</div>
-            <div class="card-body">
-              地址：${place.vicinity}<br>
-              價位：${place.price_level}<br>
-              評分：${place.rating} (${place.user_ratings_total}則評論)<br>
+            <div class="card-body d-flex justify-content-between">
+              <div>
+                地址：${place.vicinity}<br>
+                價位：${place.price_level}<br>
+                評分：${place.rating} (${place.user_ratings_total}則評論)<br>
+              </div>
+              <div>
+                <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#${place.place_id}" aria-controls="offcanvas">更多</button>
+              </div>
             </div>
           </div>
         </div>
@@ -162,19 +169,59 @@ function renderSearchResults(data) {
   searchResult.innerHTML =  html
 }
 
+// Place Details 詳細資料
+// function moreDetails(placeId) {
+//   console.log('placeId', placeId)
+//   const request = {
+//     placeId
+//     // fields: ['name', 'rating']
+//   }
+//   service = new google.maps.places.PlacesService(map)
+//   service.getDetails(request, (place, status) => {
+//     if (status === google.maps.places.PlacesServiceStatus.OK) {
+//      const offcanvas = document.querySelector('#offcanvas')
+//       const offcanvasId = 'offcanvas_' + place.place_id;
+//       offcanvas.innerHTML = `
+//         <div class="offcanvas offcanvas-start" tabindex="-1" id="${offcanvasId}" aria-labelledby="offcanvasExampleLabel">
+//     <div class="offcanvas-header">
+//       <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+//       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+//     </div>
+//     <div class="offcanvas-body">
+//       <div>
+//        etc.
+//       </div>
+//       <div class="dropdown mt-3">
+//         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+//           Dropdown button
+//         </button>
+//       </div>
+//     </div>
+//   </div>
+//       `
+//     } else { console.log('錯誤')}
+//   })
+// }
 
 // 顯示infowindow
 function showInfoWindow(place, marker) {
-  infowindow.setContent(`<strong> ${place.name}</strong><br>${place.vicinity}<br>價位：${place.price_level}<br>分數：${place.rating} (${place.user_ratings_total}則評論)`)
+  infowindow.setContent(
+    `<h6> ${place.name}</h6>
+    <div>地址：${place.vicinity}</div>
+    <div>價位：${place.price_level}</div>
+    <div>分數：${place.rating} (${place.user_ratings_total}則評論)</div>
+    `
+    )
   infowindow.open({
     anchor: marker,
     map
   })
 }
 
+// 監聽mouseover的餐廳
 function highlight(placeId) {
   const targetMarker = markers.find(marker => marker.placeId === placeId)
-  console.log('markerToHighlight', targetMarker)
+  
   // 如果找到了，並且不是目前高亮的 marker，就將地圖中心點移到該 marker
   if (targetMarker && targetMarker !== highlightMarker) {
     map.panTo(targetMarker.getPosition())
