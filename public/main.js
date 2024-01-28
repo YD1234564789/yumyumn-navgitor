@@ -200,7 +200,7 @@ function renderSearchResults(data) {
 //   </div>
 //       `
 //     } else { console.log('錯誤')}
-//   })
+//   }
 // }
 
 // 顯示infowindow
