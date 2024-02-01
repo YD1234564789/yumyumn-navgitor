@@ -5,8 +5,8 @@ const { authenticator } = require('../middleware/auth')
 const restaurantController = require('../controllers/restaurant-controller')
 const userController = require('../controllers/user-controller')
 
+router.get('/restaurants/:rid', restaurantController.getRestaurant)
 router.post('/restaurants', restaurantController.getRestaurants)
-// router.get('/restaurants/:rid', restaurantController.getRestaurant)
 
 
 
