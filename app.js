@@ -7,7 +7,7 @@ const session = require('express-session')
 const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
 const routes = require('./routes')
-const usePassport = require('./config/passport')
+const passport = require('./config/passport')
 const app = express()
 const port = process.env.PORT || 3000
 require('./config/mongoose')
@@ -22,7 +22,9 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
-usePassport(app)
+// 要在session後啟用
+app.use(passport.initialize())
+app.use(passport.session())
 // 讓登入與用戶資料常駐，提供view做存取
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated()

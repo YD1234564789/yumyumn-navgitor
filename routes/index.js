@@ -19,6 +19,10 @@ router.post('/login', passport.authenticate('local', {
 router.get('/signup', userController.signupPage)
 router.post('/signup', userController.signup)
 router.get('/logout', userController.logout)
+//google 登入
+router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile']}))
+router.get('/auth/google/callback', passport.authenticate('google', { successRedirect:'/', failureRedirect: 'login'}))
+
 router.get('/', authenticator, (req, res) => res.render('index'))
 
 module.exports = router
