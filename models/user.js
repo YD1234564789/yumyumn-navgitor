@@ -13,6 +13,13 @@ const userSchema = new Schema({
     type: String,
     require: true
   },
+  favoriteRestaurants: [{
+    restaurantName: { type: String },
+    address: { type: String },
+    priceLevel: { type: Number },
+    restaurantId: { type: String },
+    comment: { type: String }
+  }],
   createdAt: {
     type: Date,
     default: Date.now
