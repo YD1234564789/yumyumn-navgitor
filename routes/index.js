@@ -5,10 +5,12 @@ const { authenticator } = require('../middleware/auth')
 const restaurantController = require('../controllers/restaurant-controller')
 const userController = require('../controllers/user-controller')
 
+//  餐廳相關
 router.get('/restaurants/:rid', restaurantController.getRestaurant)
-router.post('/restaurants', restaurantController.getRestaurants)
-
-
+router.post('/restaurants', authenticator, restaurantController.getRestaurants)
+router.post('/favorite', userController.addFavorite)
+router.delete('/favorite/:rid', userController.removeFavorite)
+router.post('/comments/:rid', userController.postComment)
 
 // 登入相關
 router.get('/login', userController.loginPage)
