@@ -6,11 +6,11 @@ const restaurantController = require('../controllers/restaurant-controller')
 const userController = require('../controllers/user-controller')
 
 //  餐廳相關
-router.get('/restaurants/:rid', restaurantController.getRestaurant)
+router.get('/restaurants/:rid', authenticator, restaurantController.getRestaurant)
 router.post('/restaurants', authenticator, restaurantController.getRestaurants)
-router.post('/favorite', userController.addFavorite)
-router.delete('/favorite/:rid', userController.removeFavorite)
-router.post('/comments/:rid', userController.postComment)
+router.post('/favorite', authenticator, userController.addFavorite)
+router.delete('/favorite/:rid', authenticator, userController.removeFavorite)
+router.post('/comments/:rid', authenticator, userController.postComment)
 
 // 登入相關
 router.get('/login', userController.loginPage)
