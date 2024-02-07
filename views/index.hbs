@@ -4,8 +4,16 @@
   <div class="col" id="map"></div>
   
   {{!-- 結果 --}}
-  <div class="col overflow-auto" id="search-results" style="max-height: 600px;">
+  <div class="col" style="max-height: 600px;">
+    <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="search-results-tab" data-bs-toggle="tab" data-bs-target="#search-results" type="button" role="tab" aria-controls="search-results" aria-selected="true">搜尋結果</button>
+        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">我的最愛</button>
+      </div>
+    </nav>
+    <div class="tab-content overflow-auto" id="nav-tabContent" style="max-height: 550px;">
+      <div class="tab-pane fade show active" id="search-results" role="tabpanel" aria-labelledby="search-results-tab" tabindex="0"></div>
+      <div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="search-results-tab" tabindex="0"></div>
+    </div>
   </div>
-
-
 </div>

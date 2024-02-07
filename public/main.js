@@ -94,7 +94,6 @@ function searchPlaces() {
   }
   service = new google.maps.places.PlacesService(map)
   service.nearbySearch(request, callback)
-
 }
 
 // 處理後回傳結果
@@ -137,12 +136,27 @@ function clearMarkers() {
   })
   markers = []
 }
+//店家詳細資料
+//Html部分還沒套用detail資料
+function resultDetail(placeId){
+  console.log(placeId)
+  let request = {
+    placeId
+  }
+  let service = new google.maps.places.PlacesService(map);
+  service.getDetails(request, callbackdetail)
+}
 
+function callbackdetail(results, status) {  
+  console.log('resultsDetail', results)
+}
 // 結果印出在右側
 function renderSearchResults(data) {
   const searchResult = document.getElementById('search-results')
   let html = ''
+  console.log(data)  
   data.forEach((place, i) => {
+    resultDetail(place.place_id)
     html += `
       <div class="card text-dark  bg-light mb-1" onmouseover="highlight('${place.place_id}')">
         <div class="row g-0">
@@ -150,7 +164,7 @@ function renderSearchResults(data) {
             <img class="rounded" src="${place.photos[0].getUrl({ maxWidth: 150, maxHeight: 150 })}" style="max-height: 100%; max-width: 100%;">  
           </div>
           <div class="col-md-9 ">
-            <div id="place-name"class="card-header">${i + 1}.${place.name}</div>
+            <div id="place-name"class="card-header"><i class="fa-regular fa-star"></i>${i + 1}.${place.name}</div>
             <div class="card-body d-flex justify-content-between">
               <div>
                 地址：${place.vicinity}<br>
@@ -160,6 +174,55 @@ function renderSearchResults(data) {
               <div>
                 <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#${place.place_id}" aria-controls="offcanvas">更多</button>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="${place.place_id}" aria-labelledby="${place.place_id}Label">        
+        <div id="carouselExample" class="carousel slide">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="..." class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="..." class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="..." class="d-block w-100" alt="...">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="${place.place_id}Label">${place.name}</h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div>
+            <p>rating ${place.rating}星  評論數：${place.user_ratings_total}則評論  價格：${place.price_level}</p>
+            <p>餐廳類型：</p>
+          </div>
+          <div>
+            <p>地址：</p>
+            <p>營業時間：</p>
+            <p>網址：</p>
+            <p>電話：</p>
+            <div class="dropdown mt-3">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+                Dropdown button
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
             </div>
           </div>
         </div>
@@ -182,9 +245,9 @@ function renderSearchResults(data) {
 //      const offcanvas = document.querySelector('#offcanvas')
 //       const offcanvasId = 'offcanvas_' + place.place_id;
 //       offcanvas.innerHTML = `
-//         <div class="offcanvas offcanvas-start" tabindex="-1" id="${offcanvasId}" aria-labelledby="offcanvasExampleLabel">
+//         <div class="offcanvas offcanvas-start" tabindex="-1" id="${offcanvasId}" aria-labelledby="${place.place_id}Label">
 //     <div class="offcanvas-header">
-//       <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+//       <h5 class="offcanvas-title" id="${place.place_id}Label">Offcanvas</h5>
 //       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 //     </div>
 //     <div class="offcanvas-body">
