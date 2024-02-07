@@ -1,5 +1,6 @@
 const axios = require('axios')
 const API_KEY = process.env.GOOGLE_MAPS_KEY
+const User = require('../models/user')
 const mapController = {
   getRestaurants: async (req, res) => {
     const { type, rating, distance, priceLevel, latitude, longitude } = req.body
@@ -8,11 +9,24 @@ const mapController = {
         `https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=${type}餐廳&location=${latitude},${longitude}&radius=${distance}&opennow=true&minprice=0&maxprice=${priceLevel}&type=restaurant&key=${API_KEY}`
       )
       const results = response.data
+      const userId = req.user._id
+
       if (results.status === 'OK') {
         // 篩選符合評價結果
         const rateFilter = results.results.filter(result => result.rating > rating)
-        if (rateFilter.length > 0) {
-          res.json({ status: 'success', data: rateFilter })
+        const user = await User.find({ _id: userId }).select('favoriteRestaurants')
+        const favoriteRestaurantIds = user[0].favoriteRestaurants.map(restaurant => restaurant.restaurantId)
+
+        const updateResults = rateFilter.map(result => {
+          if (favoriteRestaurantIds.includes(result.place_id)) {
+            result.isFavorite = true
+          } else {
+            result.isFavorite = false
+          }
+          return result
+        })
+        if (updateResults.length > 0) {
+          res.json({ status: 'success', data: updateResults })
         } else {
           res.json({ status: 'success', data: [], message: '該條件無搜索結果' })
         }
