@@ -1,8 +1,12 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const GoogleStrategy = require('passport-google-oauth20')
+const passportJWT = require('passport-jwt')
 const User = require('../models/user')
 const bcrypt = require('bcryptjs')
+
+const JWTStrategy = passportJWT.Strategy
+const ExtractJWT = passportJWT.ExtractJwt
 
 passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
   User.findOne({ email })
@@ -41,6 +45,17 @@ passport.use(new GoogleStrategy({
       })
   }
 ))
+
+// JWT 登入
+const jwtOptions = {
+  jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.JWT_SECRET
+}
+passport.use(new JWTStrategy(jwtOptions, (jwtPayload, cb) => {
+  User.findByPk(jwtPayload.id)
+    .then(user => cb(null, user))
+    .catch(err => cb(err))
+}))
 
 passport.serializeUser((user, done) => {
   done(null, user.id)

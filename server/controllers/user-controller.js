@@ -1,29 +1,41 @@
 const User = require('../models/user')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 const userController = {
   // 測試連接使用
   hello: (req, res) => {
     res.json({ "users": ["userOne", "userTwo", "userThree"]})
   },
-z
-  login: (req, res) => {
-    res.redirect('/index')
+  login: (req, res, next) => {
+    try {
+      const userData = req.user.toJSON()
+      delete userData.password
+      const token = jwt.sign(userData, process.env.JWT_SECRET, { expiresIn: '30'})
+      res.json({
+        status: 'success',
+        data: {
+          token,
+          user: userData
+        }
+      })
+    } catch (error) {
+      next(err)
+    }
   },
-  signupPage: (req, res) => {
-    res.render('signup')
-  },
-  signup: (req, res) => {
+  signup: (req, res, next) => {
     const { name, email, password, passwordCheck } = req.body
+    if (password !== passwordCheck) throw new Error('Passwords do not match!')
     User.findOne({ email })
       .then(user => {
         if (user) {
           console.log('User already exists.')
-          res.render('signup', {
-            name,
-            email,
-            password,
-            passwordCheck
+          res.status(500).json({
+            status: 'error',
+            data: {
+              "Error Message": "email used"
+            }
           })
+          req.body = []
         } else {
           return bcrypt
             .genSalt(10)
@@ -33,17 +45,23 @@ z
               email,
               password: hash
             }))
-            .then(() => res.redirect('/'))
-            .catch(err => console.log(err))
+            .then((createdUser) => {
+              const user = createdUser.toJSON()
+              delete createdUser.password
+              delete createdUser.passwordCheck
+              return res.json({
+                status: 'success',
+                data: {
+                  ...user
+                }
+              })
+            })
+            .catch(err => next(err))
         }
       })
-      .catch(err => console.log(err))
+      .catch(err => next(err))
   },
-  logout: (req, res) => {
-    req.logout()
-    res.redirect('/login')
-  },
-  addFavorite: async (req, res) => {
+  addFavorite: async (req, res, next) => {
     try {
       const { restaurantName, address, priceLevel, restaurantId } = req.body
       const userId = req.user._id
@@ -65,9 +83,9 @@ z
       }
 
       res.json({ status: 'success', data })
-    } catch (error) {
-      console.error('新增最愛餐廳失敗：', error)
-      res.status(500).json({ status: 'error', message: '新增最愛餐廳失敗' })
+    } catch (err) {
+      console.error('新增最愛餐廳失敗：', err)
+      next(err)
     }
   },
   removeFavorite: async (req, res) => {
@@ -89,9 +107,9 @@ z
 
       // 返回更新後的用戶資料
       res.json({ status: 'success', data: removeRestaurant })
-    } catch (error) {
-      console.error('刪除最愛餐廳失敗：', error)
-      res.status(500).json({ status: 'error', message: '刪除最愛餐廳失敗' })
+    } catch (err) {
+      console.error('刪除最愛餐廳失敗：', err)
+      next(err)
     }
   },
   postComment: async (req, res) => {
@@ -108,14 +126,14 @@ z
       )
       // 檢查是否找到了用戶，以及是否成功更新評論
       if (!updateComment) {
-        return res.status(404).json({ status: 'error', message: '找不到用戶或餐廳' });
+        return res.status(404).json({ status: 'error', message: '找不到用戶或餐廳' })
       }
 
       // 返回更新後的用戶資料
       res.json({ status: 'success', data: updateComment });
-    } catch (error) {
-      console.error('發表評論失敗：', error);
-      res.status(500).json({ status: 'error', message: '發表評論失敗' });
+    } catch (err) {
+      console.error('發表評論失敗：', err);
+      next(err)
     }
   }
 }
