@@ -1,0 +1,27 @@
+  <div class="row justify-content-center align-items-center" style="height: 600px">
+    <div class="col-md-5 shadow-lg px-5 py-4 mb-5 bg-white rounded-3">
+      <div class="mb-4 text-center">
+        <h1 class="h3 font-weight-normal mb-4 fw-bold">登入</h1>
+      </div>
+
+      <form class="form-login" action="/login" method="POST">
+        <div class="mb-3">
+          <label class="form-label px-3 text-muted" for="email">信箱</label>
+          <input class="form-control rounded-pill bg-light" id="email" type="text" name="email" placeholder="name@mail.com"
+            required autofocus>
+        </div>
+        <div class="mb-4">
+          <label class="form-label px-3 text-muted" for="password">密碼</label>
+          <input class="form-control rounded-pill bg-light" id="password" type="password" name="password"required>
+        </div>
+        <div class="d-grid gap-2 mb-4 ">
+          <button class="btn btn-primary btn-block fw-bold rounded-pill" type="submit">提交</button>
+        </div>
+        <hr>
+        <div class="text-center">
+          <a href="/auth/google" class="btn btn-secondary btn-block btn-sm">Google Login</a>
+          <a href="/signup" class="btn btn-outline-secondary btn-sm fw-bold">註冊</a>
+        </div>
+      </form>      
+    </div>
+  </div>

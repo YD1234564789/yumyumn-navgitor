@@ -1,0 +1,33 @@
+body {
+  color: #262220;
+}
+
+#header {
+  /* background-color: #fbf9f1; */
+}
+
+#place-name {
+  background-color: #e5e1da;
+  color: #262220;
+  font-weight: 600;
+}
+
+#map {
+  border-radius: 5px;
+  border: 1px solid #c3a6a0;
+}
+
+#filterForm {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.navbar-brand {
+  font-size: 1em;
+  font-weight: bold;
+  color: #3D6572;
+  font-style: italic;
+}
+i{
+  margin-right: 2px;
+}
