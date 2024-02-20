@@ -13,6 +13,7 @@ require('./config/mongoose')
 
 // 可解析POST表單內容 req.body
 app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 app.use(express.static('public'))
 app.use(session({
   secret: 'ThisIsMySecret',
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
   res.locals.user = req.user
   next()
 })
+
 // 增加可覆蓋的PUT DELETE方法
 app.use(methodOverride('_method'))
 app.use(routes)

@@ -2,7 +2,7 @@ const axios = require('axios')
 const API_KEY = process.env.GOOGLE_MAPS_KEY
 const User = require('../models/user')
 const mapController = {
-  getRestaurants: async (req, res) => {
+  getRestaurants: async (req, res, next) => {
     const { type, rating, distance, priceLevel, latitude, longitude } = req.body
     try {
       const response = await axios.get(
@@ -33,9 +33,9 @@ const mapController = {
       } else {
         res.json({ status: results.status, data: results.results })
       }
-    } catch (error) {
-      console.error('無法與API取得資料', error)
-      res.status(500).json({ status: 'error', message: '無法與API取得資料' })
+    } catch (err) {
+      console.error('無法與API取得資料', err)
+      next(err)
     }
   },
   getRestaurant: async (req, res) => {

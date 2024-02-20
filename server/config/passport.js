@@ -2,23 +2,36 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const GoogleStrategy = require('passport-google-oauth20')
 const passportJWT = require('passport-jwt')
-const User = require('../models/user')
 const bcrypt = require('bcryptjs')
+const User = require('../models/user')
 
 const JWTStrategy = passportJWT.Strategy
 const ExtractJWT = passportJWT.ExtractJwt
 
-passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
-  User.findOne({ email })
-    .then(user => {
-      if (!user) return done(null, false, { message: 'That email is not registered!'})
-      bcrypt.compare(password, user.password).then(isMatch => {
-        if (!isMatch) return done(null, false, { message: 'Email or Password incorrect.'})
-        return done(null, user)
+passport.use(new LocalStrategy(
+  {
+    usernameField: 'email',
+    // passwordField: 'password',
+    // passReqToCallback: true
+  },
+  // authenticate user
+  (email, password, cb) => {
+    User.findOne({ email })
+      .then(user => {
+        if (!user) {
+          return cb(null, false)
+        }
+        return bcrypt.compare(password, user.password)
+          .then(isMatch => {
+            if (!isMatch) {
+             return cb(null, false)
+            }
+            return cb(null, user)
+        })
       })
-    })
-    .catch(err => done(err, false))
-}))
+      .catch((err) => cb(err, false))
+  }))
+
 
 // google登入
 passport.use(new GoogleStrategy({
@@ -52,19 +65,19 @@ const jwtOptions = {
   secretOrKey: process.env.JWT_SECRET
 }
 passport.use(new JWTStrategy(jwtOptions, (jwtPayload, cb) => {
-  User.findByPk(jwtPayload.id)
+  User.findById(jwtPayload._id)
     .then(user => cb(null, user))
     .catch(err => cb(err))
 }))
 
-passport.serializeUser((user, done) => {
-  done(null, user.id)
+passport.serializeUser((user, cb) => {
+  cb(null, user.id)
 })
-passport.deserializeUser((id, done) => {
+passport.deserializeUser((id, cb) => {
   User.findById(id)
     .lean()
-    .then(user => done(null, user))
-    .catch(err => done(err, null))
+    .then(user => cb(null, user))
+    .catch(err => cb(err, null))
 })
 
 
