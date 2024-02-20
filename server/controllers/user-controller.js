@@ -63,13 +63,14 @@ const userController = {
   },
   addFavorite: async (req, res, next) => {
     try {
-      const { restaurantName, address, priceLevel, restaurantId } = req.body
+      const { restaurantName, address, priceLevel, restaurantId, photo } = req.body
       const userId = req.user._id
       const favoriteRestaurants = {
         restaurantName,
         address,
         priceLevel,
-        restaurantId
+        restaurantId,
+        photo
       }
       const data = await User.findOneAndUpdate(
         { _id: userId },
@@ -81,7 +82,7 @@ const userController = {
       if (!data) {
         return res.status(404).json({ status: 'error', message: '找不到用戶' })
       }
-
+      
       res.json({ status: 'success', data })
     } catch (err) {
       console.error('新增最愛餐廳失敗：', err)

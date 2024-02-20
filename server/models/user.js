@@ -18,7 +18,8 @@ const userSchema = new Schema({
     address: { type: String },
     priceLevel: { type: Number },
     restaurantId: { type: String },
-    comment: { type: String }
+    comment: { type: String },
+    photo: { type: String }
   }],
   createdAt: {
     type: Date,
