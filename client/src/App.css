@@ -1,38 +1,59 @@
-.App {
-  text-align: center;
+#background{
+  background-image: url(https://img.freepik.com/free-photo/delicious-healthy-asian-food-gray-textured-background-with-copy-space_24972-1022.jpg?w=996&t=st=1705566580~exp=1705567180~hmac=8cf44e4f668108e3f9381440ee24249abd6b4c6bf6b9abff879a60309c9a78bd);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  height: 100vh; 
+}
+.navbar{
+  padding: 10px 30px;
+}
+.navbar-brand {
+  font-size: 1em;
+  font-weight: bold;
+  color: #3D6572;
+  font-style: italic;
+}
+.navbar-brand img{
+  width:62px;
+}
+.row{
+  height: 600px;
+}
+.google-log{
+  margin-right:4px;
+}
+#place-name {
+  background-color: #e5e1da;
+  color: #262220;
+  font-weight: 600;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#map {
+  border-radius: 5px;
+  border: 1px solid #c3a6a0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+#filterForm {
+  font-weight: bold;
+  position: relative;
+  #priceLevel{
+    position: relative;
+    top:4px;
+  }
+  span{
+    margin-left:7px;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.main-contain{
+  background-color: #fff;
+  padding-top:5px;
+  .row{
+    max-width: 1320px;
+    margin: 0px auto;
   }
-  to {
-    transform: rotate(360deg);
+  .result{
+    max-height: 600px;
   }
 }
