@@ -1,7 +1,7 @@
-import './App.css';
+import './App.css'
 import React, { useEffect, useState } from 'react'
 
-function App() {
+function App () {
   const [backendData, setBackendData] = useState([{}])
 
   useEffect(() => {
@@ -10,6 +10,7 @@ function App() {
     ).then(
       data => {
         setBackendData(data)
+        console.log('data', data)
       }
     )
   }, [])
@@ -17,14 +18,16 @@ function App() {
     <div>
       {(typeof backendData.users === 'undefined') ? (
         <p>Loading...</p>
-      ): (
+      ) : (
         backendData.users.map((user, i) => (
           <p key={i}>{user}</p>
         ))
       )}
 
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
+
+
