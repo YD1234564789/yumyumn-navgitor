@@ -1,33 +1,25 @@
-import './App.css'
-import React, { useEffect, useState } from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import './App.css';
+import LoginPage from './pages/LoginPage';
+import MainPage from './pages/MainPage';
+import { AuthContextProvider, RequireAuth } from './api/auth';
 
-function App () {
-  const [backendData, setBackendData] = useState([{}])
-
-  useEffect(() => {
-    fetch("/api").then(
-      response => response.json()
-    ).then(
-      data => {
-        setBackendData(data)
-        console.log('data', data)
-      }
-    )
-  }, [])
+function App() {
+  const auth=localStorage.token
   return (
-    <div>
-      {(typeof backendData.users === 'undefined') ? (
-        <p>Loading...</p>
-      ) : (
-        backendData.users.map((user, i) => (
-          <p key={i}>{user}</p>
-        ))
-      )}
-
-    </div>
-  )
+    <BrowserRouter>
+      <AuthContextProvider>
+        <Routes>
+          <Route path="login" element={<LoginPage />} />
+          <Route path="*" element={
+            <RequireAuth auth={auth}>
+              <MainPage />
+            </RequireAuth >
+          } />
+        </Routes>
+      </AuthContextProvider>
+    </BrowserRouter>
+  );
 }
 
-export default App
-
-
+export default App;

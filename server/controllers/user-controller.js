@@ -61,6 +61,19 @@ const userController = {
       })
       .catch(err => next(err))
   },
+  getFavorites: async (req, res, next) => {
+    try {
+      const userData = req.user.toJSON()
+      delete userData.password
+      if (!req.user) {
+        return res.status(404).json({ status: 'error', message: '找不到用戶' })
+      }
+      res.json({ status: 'success', user: userData })
+    } catch (err) {
+      console.error('取得最愛餐廳失敗：', err)
+      next(err)
+    }
+  },
   addFavorite: async (req, res, next) => {
     try {
       const { restaurantName, address, priceLevel, restaurantId, photo } = req.body

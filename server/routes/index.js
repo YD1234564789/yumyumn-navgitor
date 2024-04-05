@@ -13,6 +13,7 @@ router.get('/restaurants/:rid', authenticated, restaurantController.getRestauran
 router.post('/restaurants', authenticated, restaurantController.getRestaurants)
 router.post('/favorite', authenticated, userController.addFavorite)
 router.delete('/favorite/:rid', authenticated, userController.removeFavorite)
+router.get('/favorites', authenticated, userController.getFavorites)
 router.post('/comments/:rid', authenticated, userController.postComment)
 
 // 登入相關
