@@ -54,7 +54,6 @@ export default function MapConstructor(){
 
     return isLoaded && (
         <div id="map-container">
-
             <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={mapCenter}

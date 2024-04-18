@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { getFavorite } from "../api/RestApi";
+import { InformContext } from "../context/InformContext";
 import RestaurantItem from "./RestaurantItem";
 import MapConstructor from "./map";
 
 export default function MainContainer(){
-    const [favorite, setFavorite] = useState([]);
+    const { restaurantsResult } = useContext(InformContext)
+    const [ favorite, setFavorite ] = useState([]);
     const getFavoriteAsync = async () => {
         try {
             const favorites = await getFavorite();
@@ -13,14 +15,18 @@ export default function MainContainer(){
             console.error(error);
         }
     };
-
     useEffect(() => {
         getFavoriteAsync();
     }, []);
-
+    const SearchCollection = restaurantsResult.map( data => {
+        return (
+            <RestaurantItem key={data.place_id} id={data.place_id} search="true" api_key={process.env.REACT_APP_GOOGLE_MAPS_KEY} name={data.name} img={data.photos[0].photo_reference} isFavorite={data.isFavorite} address={data.vicinity} price_level={data.price_level} rating={data.rating} user_ratings_total={data.user_ratings_total} />
+        )
+    })
+    //記得加自己的備註
     const FavoriteCollection = favorite.map( data => {
         return (
-            <RestaurantItem key={data._id} id={data._id} name={data.restaurantName} address={data.address} price_level={data.priceLevel} />
+            <RestaurantItem key={data._id} id={data._id} search="false" name={data.restaurantName} address={data.address} price_level={data.priceLevel} comment={data.comment} />
         )
     })
     return (
@@ -35,7 +41,9 @@ export default function MainContainer(){
                         </div>
                     </nav>
                     <div className="tab-content overflow-auto" id="nav-tabContent">
-                        <div className="tab-pane fade show active" id="search-results" role="tabpanel" aria-labelledby="search-results-tab" tabIndex="0"></div>
+                        <div className="tab-pane fade show active" id="search-results" role="tabpanel" aria-labelledby="search-results-tab" tabIndex="0">
+                            {SearchCollection}
+                        </div>
                         <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="search-results-tab" tabIndex="0">
                             {FavoriteCollection}
                         </div>
