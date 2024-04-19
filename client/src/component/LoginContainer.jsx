@@ -26,7 +26,7 @@ export default function LoginContainer() {
     };
     useEffect(() => {
         if (auth) {
-            navigate('/');
+            navigate('/main');
         }
     },[localStorage.token])
     return(

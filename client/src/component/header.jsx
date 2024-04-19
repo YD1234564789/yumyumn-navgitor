@@ -6,12 +6,12 @@ export default function Header() {
   const path = useLocation().pathname
   let content = ""
   let search = ""
-  if ( path === "/") {
-    content = "登出"
-    search= <SearchBar />
-  }else{
+  if ( path === "/login") {
     content = "註冊"
     search = ""
+  }else{
+    content = "登出"
+    search= <SearchBar />
   }
   return(
     <div id="header">        

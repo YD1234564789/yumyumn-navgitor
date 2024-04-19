@@ -1,154 +1,74 @@
-export default function RestaurantItem({ id, name, address, price_level }){
+import { useState, useContext } from "react";
+import { ChosenRestaurant, LikeRestaurant, UnlikeRestaurant } from "../api/RestApi";
+import RestItemDetail from "./RestItemDetail";
+import { InformContext } from "../context/InformContext";
 
-    //<p>地址：${place.vicinity}</p>
-    //<p>價位：${place.price_level}</p>
-    //<p>評分：${place.rating} (${place.user_ratings_total}則評論)</p>
-
+export default function RestaurantItem({ id, search, api_key, name, isFavorite, img, address, price_level, rating, user_ratings_total, comment }){
+    const { setfavoriteList } = useContext(InformContext)
+    let item =""
+    const [rest, setRest] = useState()
+    const ChosenRestaurantAsync = async () => {
+        try {
+            const favorites = await ChosenRestaurant(id);
+            setRest(favorites.data.result)
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const handleClick = async () => { 
+        ChosenRestaurantAsync()
+    };
+    const handleLike = async() => {
+        const Alldata=await LikeRestaurant({
+            restaurantName:name,
+            address:address,
+            priceLevel:price_level,
+            restaurantId:id,
+            photo:img,
+        })
+        setfavoriteList(Alldata)
+    }
+    const handleUnlike = async() => {
+        const Alldata=await UnlikeRestaurant({
+            restaurantId:id,
+        })
+        setfavoriteList(Alldata)
+    }
+    if (search==="true"){
+        item= 
+            <div>
+                <p>地址：{address}</p>
+                <p>價位：{price_level}</p>
+                <p>評分：{rating} ({user_ratings_total}則評論)</p>
+            </div>        
+    }else{
+        item= 
+            <div>
+                <p>地址：{address}</p>
+                <p>價位：{price_level}</p>
+                <p>備註：{comment}</p>
+            </div>        
+    }
     return(
         <div>
             <div className="card text-dark  bg-light mb-1">
                 <div className="row g-0">
                     <div className="col-md-3 d-flex align-items-center justify-content-center" >
-                        <img className="rounded" src="" />
+                        <img className="rounded" src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photo_reference=${img}&key=${api_key}`} alt="" />
                     </div>
                     <div className="col-md-9 ">
-                        <div id="place-name"className="card-header"><i className="fa-solid fa-star"></i><i className="fa-regular fa-star"></i>🌳{name}</div>
+                        <div id="place-name"className="card-header">{isFavorite ? <i className="fa-solid fa-star" onClick={handleUnlike} ></i> :<i className="fa-regular fa-star" onClick={handleLike} ></i>}{name}</div>
                         <div className="card-body d-flex justify-content-between">
+                            
+                            {item}
                             <div>
-                                <p>地址：{address}</p>
-                                <p>價位：{price_level}</p>
-                            </div>
-                            <div>
-                                <button className="btn btn-secondary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target={`#r${id}`} aria-controls="offcanvas">更多</button>
+                                <button className="btn btn-secondary btn-sm" type="button" onClick={handleClick} data-bs-toggle="offcanvas" data-bs-target={`#r${id}`} aria-controls="offcanvas">更多</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="offcanvas offcanvas-start" tabIndex="-1" id={`r${id}`} aria-labelledby={id}>        
-                <div id="carouselExample" className="carousel slide">
-                    <div className="carousel-inner">
-                        <div className="carousel-item active">
-                            <img src="" className="d-block w-100" alt="..." />
-                        </div>
-                        <div className="carousel-item">
-                            <img src="" className="d-block w-100" alt="..." />
-                        </div>
-                        <div className="carousel-item">
-                            <img src="" className="d-block w-100" alt="..." />
-                        </div>
-                    </div>
-                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Previous</span>
-                    </button>
-                    <button className="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Next</span>
-                    </button>
-                </div>
-                <div className="offcanvas-header">
-                    <h5 className="offcanvas-title" id="${place.place_id}Label">{name}</h5>
-                    <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div className="offcanvas-body">
-                    <div>
-                        <p>價格：{price_level}</p>
-                        <p>餐廳類型：</p>
-                    </div>
-                    <div>
-                        <p>地址：{address}</p>
-                        <p>營業時間：</p>
-                        <p>網址：</p>
-                        <p>電話：</p>
-                        <div className="dropdown mt-3">
-                            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
-                                Dropdown button
-                            </button>
-                            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li><a className="dropdown-item" href="#">Action</a></li>
-                                <li><a className="dropdown-item" href="#">Another action</a></li>
-                                <li><a className="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>   
+            <RestItemDetail id={id} api_key={api_key} data={rest} />
         </div>
     )
 }
-
-/*
-    return(
-        <div>
-            <div className="card text-dark  bg-light mb-1">
-                <div className="row g-0">
-                    <div className="col-md-3 d-flex align-items-center justify-content-center" >
-                        <img className="rounded" src="${place.photos[0].getUrl({ maxWidth: 150, maxHeight: 150 })}" />
-                    </div>
-                    <div className="col-md-9 ">
-                        <div id="place-name"className="card-header"><i className="fa-solid fa-star"></i><i className="fa-regular fa-star"></i>{name}</div>
-                        <div className="card-body d-flex justify-content-between">
-                            <div>
-                                <p>地址：{address}</p>
-                                <p>價位：{price_level}</p>
-                            </div>
-                            <div>
-                                <button className="btn btn-secondary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#${place.place_id}" aria-controls="offcanvas">更多</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="offcanvas offcanvas-start" tabIndex="-1" id="${place.place_id}" aria-labelledby="${place.place_id}Label">        
-                <div id="carouselExample" className="carousel slide">
-                    <div className="carousel-inner">
-                        <div className="carousel-item active">
-                            <img src="..." className="d-block w-100" alt="..." />
-                        </div>
-                        <div className="carousel-item">
-                            <img src="..." className="d-block w-100" alt="..." />
-                        </div>
-                        <div className="carousel-item">
-                            <img src="..." className="d-block w-100" alt="..." />
-                        </div>
-                    </div>
-                    <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Previous</span>
-                    </button>
-                    <button className="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Next</span>
-                    </button>
-                </div>
-                <div className="offcanvas-header">
-                    <h5 className="offcanvas-title" id="${place.place_id}Label">{name}</h5>
-                    <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div className="offcanvas-body">
-                    <div>
-                        <p>價格：{price_level}</p>
-                        <p>餐廳類型：</p>
-                    </div>
-                    <div>
-                        <p>地址：</p>
-                        <p>營業時間：</p>
-                        <p>網址：</p>
-                        <p>電話：</p>
-                        <div className="dropdown mt-3">
-                            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
-                                Dropdown button
-                            </button>
-                            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li><a className="dropdown-item" href="#">Action</a></li>
-                                <li><a className="dropdown-item" href="#">Another action</a></li>
-                                <li><a className="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>   
-        </div>
-    )
-*/
