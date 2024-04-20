@@ -54,7 +54,8 @@ export default function RestaurantItem({ id, search, api_key, name, isFavorite, 
             <div className="card text-dark  bg-light mb-1">
                 <div className="row g-0">
                     <div className="col-md-3 d-flex align-items-center justify-content-center" >
-                        <img className="rounded" src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photo_reference=${img}&key=${api_key}`} alt="" />
+                        {/* 我的最愛分頁可能沒傳入apikey所以圖片無法顯示 */}
+                        <img className="rounded" src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photo_reference=${img}&key=${api_key} ` } alt="" />
                     </div>
                     <div className="col-md-9 ">
                         <div id="place-name"className="card-header">{isFavorite ? <i className="fa-solid fa-star" onClick={handleUnlike} ></i> :<i className="fa-regular fa-star" onClick={handleLike} ></i>}{name}</div>

@@ -77,7 +77,6 @@ const userController = {
   addFavorite: async (req, res, next) => {
     try {
       const { restaurantName, address, priceLevel, restaurantId, photo } = req.body
-      console.log('body',req.body)
       const userId = req.user._id
       const favoriteRestaurants = {
         restaurantName,
