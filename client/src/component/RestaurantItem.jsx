@@ -30,7 +30,7 @@ export default function RestaurantItem({ id, search, api_key, name, isFavorite, 
     }
     const handleUnlike = async() => {
         const Alldata=await UnlikeRestaurant({
-            restaurantId:id,
+            restaurantId:id
         })
         setfavoriteList(Alldata)
     }

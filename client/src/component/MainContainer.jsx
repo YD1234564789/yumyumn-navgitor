@@ -18,7 +18,7 @@ export default function MainContainer(){
     useEffect(() => {
         getFavoriteAsync();
     }, []);
-    const SearchCollection = restaurantsResult.map( data => {
+    const SearchCollection = restaurantsResult.map(data => {
         return (
             <RestaurantItem key={data.place_id} id={data.place_id} search="true" api_key={process.env.REACT_APP_GOOGLE_MAPS_KEY} name={data.name} img={data.photos[0].photo_reference} isFavorite={data.isFavorite} address={data.vicinity} price_level={data.price_level} rating={data.rating} user_ratings_total={data.user_ratings_total} />
         )

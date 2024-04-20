@@ -11,7 +11,7 @@ export default function RestItemDetail ({id, api_key, data=[]}) {
     }
     function photosCollection() {
         if (data.photos){
-            const photos = data.photos.map ( photo => {
+            const photos = data.photos.map (photo => {
                 if (photo === data.photos[0]){
                     return (
                         <div className="carousel-item active">

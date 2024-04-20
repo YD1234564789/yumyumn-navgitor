@@ -77,6 +77,7 @@ const userController = {
   addFavorite: async (req, res, next) => {
     try {
       const { restaurantName, address, priceLevel, restaurantId, photo } = req.body
+      console.log('body',req.body)
       const userId = req.user._id
       const favoriteRestaurants = {
         restaurantName,
@@ -85,18 +86,24 @@ const userController = {
         restaurantId,
         photo
       }
-      const data = await User.findOneAndUpdate(
-        { _id: userId },
-        { $push: { favoriteRestaurants } },
-        // new 會回傳更新後結果, 遮蔽密碼
-        { new: true, projection: { password: 0 } }
-      )
-
-      if (!data) {
+      // 資料庫找到用戶
+      const user = await User.findOne(userId)
+      const isRestaurantAlreadyFavorited = user.favoriteRestaurants.some(restaurant => restaurant.restaurantId === restaurantId)
+      if (!user) {
         return res.status(404).json({ status: 'error', message: '找不到用戶' })
       }
-      
-      res.json({ status: 'success', data })
+      // 判斷最愛列表是否已存在該餐廳ID
+      if (isRestaurantAlreadyFavorited) {
+        res.json({ status: 'error', message: '餐廳已加入最愛'})
+      } else {
+        const addFavorite = await User.findOneAndUpdate(
+          { _id: userId },
+          { $push: { favoriteRestaurants } },
+          // new 會回傳更新後結果, 遮蔽密碼
+          { new: true, projection: { password: 0 } }
+        )
+        res.json({ status: 'success', data: addFavorite })
+      }
     } catch (err) {
       console.error('新增最愛餐廳失敗：', err)
       next(err)
@@ -107,20 +114,26 @@ const userController = {
       const restaurantId = req.params.rid
       const userId = req.user._id
 
-      // 使用 findOneAndUpdate() 將符合條件的最愛餐廳從陣列中刪除
-      const removeRestaurant = await User.findOneAndUpdate(
-        { _id: userId },
-        { $pull: { favoriteRestaurants: { restaurantId } } },
-        { new: true, projection: { password: 0 } }
-      )
-
-      // 檢查是否找到了用戶，以及是否成功更新最愛餐廳資料
-      if (!removeRestaurant) {
+      // 資料庫找到用戶
+      const user = await User.findOne(userId)
+      const isRestaurantAlreadyFavorited = user.favoriteRestaurants.some(restaurant => restaurant.restaurantId === restaurantId)
+      if (!user) {
         return res.status(404).json({ status: 'error', message: '找不到用戶' })
       }
+      // 判斷最愛列表是否已存在該餐廳ID
+      if (!isRestaurantAlreadyFavorited) {
+        res.json({ status: 'error', message: '該餐廳還不是你的最愛!' })
+      } else {
+        // 使用 findOneAndUpdate() 將符合條件的最愛餐廳從陣列中刪除
+        const removeRestaurant = await User.findOneAndUpdate(
+          { _id: userId },
+          { $pull: { favoriteRestaurants: { restaurantId } } },
+          { new: true, projection: { password: 0 } }
+        )
+        // 返回更新後的用戶資料
+        res.json({ status: 'success', data: removeRestaurant })
+      }
 
-      // 返回更新後的用戶資料
-      res.json({ status: 'success', data: removeRestaurant })
     } catch (err) {
       console.error('刪除最愛餐廳失敗：', err)
       next(err)

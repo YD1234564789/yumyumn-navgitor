@@ -22,7 +22,7 @@ export const SearchApi = async ({ type, distance, rating, priceLevel, latitude, 
     const res = await axiosInstance.post(`/restaurants`, {
       type, distance, rating, priceLevel, latitude, longitude,
     });
-    console.log("SearchApi.js 裡的 SearchApi 回傳值: ", res);
+    console.log("SearchApi.js 裡的 SearchApi 回傳值: ", res.data);
     return res.data;
   } catch (error) {
     console.error("[Get SearchApi failed]: ", error.response.data.message);

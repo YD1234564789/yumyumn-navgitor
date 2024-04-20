@@ -10,7 +10,9 @@ const mapController = {
       )
       const results = response.data
       const userId = req.user._id
-
+      if (results.status === 'ZERO_RESULTS') {
+        res.json({ message: '無搜索結果'})
+      }
       if (results.status === 'OK') {
         // 篩選符合評價結果
         const rateFilter = results.results.filter(result => result.rating > rating)
@@ -25,13 +27,14 @@ const mapController = {
           }
           return result
         })
+
         if (updateResults.length > 0) {
           res.json({ status: 'success', data: updateResults })
         } else {
           res.json({ status: 'success', data: [], message: '該條件無搜索結果' })
         }
       } else {
-        res.json({ status: results.status, data: results.results })
+        res.json({ status: results.status, data: results.results})
       }
     } catch (err) {
       console.error('無法與API取得資料', err)

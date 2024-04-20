@@ -10,7 +10,7 @@ import { SearchApi } from '../api/SearchApi';
 
 export default function SearchBar(){  
   const { searchr, setSearchr, setRestaurantsResult } = useContext(InformContext)
-  console.log(searchr)
+  // console.log(searchr)
   const Seekbar = () => {
     const [ value, setValue ] = useState(3);  
     return (
@@ -19,7 +19,9 @@ export default function SearchBar(){
           value={value}
           onChange={changeEvent => {
             setValue(changeEvent.target.value)
-            setSearchr({ ...searchr, priceLevel:changeEvent.target.value})
+            console.log(value)
+            // 註解起來就能滑動，可能兩個不能一起放
+            // setSearchr({ ...searchr, priceLevel:changeEvent.target.value})
           }}
           step={1} min={1} max={5}
           bsPrefix='bar'
@@ -38,14 +40,13 @@ export default function SearchBar(){
     })
     setRestaurantsResult(Alldata.data)
   };
-  return(
+  return (
     <div id="filterForm">
       <label>
         餐廳類別：
         <select name="type" value={searchr.type}
           onChange={e => {
             setSearchr({ ...searchr, [e.target.name]:e.target.value})
-            console.log(searchr)
         }}>
           <option value="" title="顯示所有類別">全部</option>
           <option value="咖啡廳" title="以咖啡、茶和輕食為主的場所">咖啡廳</option>
@@ -68,7 +69,6 @@ export default function SearchBar(){
         <select name="distance" value={searchr.distance}
           onChange={e => {
             setSearchr({ ...searchr, [e.target.name]:e.target.value})
-            console.log(searchr)
         }}>
           <option value="100" title="100 公尺">100 公尺</option>
           <option value="300" title="300 公尺">300 公尺</option>
@@ -82,7 +82,6 @@ export default function SearchBar(){
         <select name="rating" value={searchr.rating}
           onChange={e => {
             setSearchr({ ...searchr, [e.target.name]:e.target.value})
-            console.log(searchr)
         }}>
           <option value="1" title="1分以上">1分以上</option>
           <option value="2" title="2分以上">2分以上</option>
