@@ -1,18 +1,28 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import logo from '../image/logot.png';
 import SearchBar from './SearchBar';
 
 export default function Header() {
   const path = useLocation().pathname
+  const navigate = useNavigate();
+  const handleClick = () => {
+    localStorage.clear()
+    navigate('/login')
+  }
   let content = ""
   let search = ""
   if ( path === "/login") {
-    content = "註冊"
+    content = <button className="btn btn-outline-secondary btn-sm" >註冊</button>
     search = ""
   }else{
-    content = "登出"
+    /*
+    <SearchBar />
+    <button className="btn btn-outline-secondary btn-sm ">{content}</button>
+    */
+    content = <button className="btn btn-outline-secondary btn-sm" onClick={handleClick} >登出</button>
     search= <SearchBar />
   }
+
   return(
     <div id="header">        
         <nav className="navbar d-flex justify-content-between" >    
@@ -21,7 +31,7 @@ export default function Header() {
             Navigator
           </a>
           {search}
-          <a href="/signup" className="btn btn-outline-secondary btn-sm ">{content}</a>
+          {content}
         </nav>     
     </div>
   )

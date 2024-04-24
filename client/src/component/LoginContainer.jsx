@@ -46,7 +46,7 @@ export default function LoginContainer() {
                             <input className="form-control rounded-pill bg-light" id="password" type="password" name="password" onChange={(passwordInput) => setPassword(passwordInput.target.value)} required="" />
                         </div>
                         <div className="d-grid gap-2 mb-4 ">
-                            <button className="btn btn-primary btn-block fw-bold rounded-pill" onClick={handleClick} type="submit">提交</button>
+                            <button className="btn btn-primary btn-block fw-bold rounded-pill" onClick={handleClick}>提交</button>
                         </div>
                         <hr />
                         <div className="text-center">

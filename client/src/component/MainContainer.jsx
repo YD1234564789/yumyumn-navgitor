@@ -20,13 +20,13 @@ export default function MainContainer(){
     }, []);
     const SearchCollection = restaurantsResult.map( data => {
         return (
-            <RestaurantItem key={data.place_id} id={data.place_id} search="true" api_key={process.env.REACT_APP_GOOGLE_MAPS_KEY} name={data.name} img={data.photos[0].photo_reference} isFavorite={data.isFavorite} address={data.vicinity} price_level={data.price_level} rating={data.rating} user_ratings_total={data.user_ratings_total} />
+            <RestaurantItem key={data.place_id} id={data.place_id} search="true" api_key={process.env.REACT_APP_GOOGLE_MAPS_KEY} name={data.name} img={data.photos[0].photo_reference} isFavorite={data.isFavorite} address={data.vicinity} price_level={data.price_level} rating={data.rating} user_ratings_total={data.user_ratings_total} location={data.geometry.location} />
         )
     })
     //記得加自己的備註
     const FavoriteCollection = favorite.map( data => {
         return (
-            <RestaurantItem key={data._id} id={data._id} search="false" name={data.restaurantName} address={data.address} price_level={data.priceLevel} comment={data.comment} />
+            <RestaurantItem key={data._id} id={data._id} search="false" api_key={process.env.REACT_APP_GOOGLE_MAPS_KEY} name={data.restaurantName} address={data.address} price_level={data.priceLevel} comment={data.comment} />
         )
     })
     return (

@@ -3,8 +3,8 @@ import { ChosenRestaurant, LikeRestaurant, UnlikeRestaurant } from "../api/RestA
 import RestItemDetail from "./RestItemDetail";
 import { InformContext } from "../context/InformContext";
 
-export default function RestaurantItem({ id, search, api_key, name, isFavorite, img, address, price_level, rating, user_ratings_total, comment }){
-    const { setfavoriteList } = useContext(InformContext)
+export default function RestaurantItem({ id, search, api_key, name, isFavorite, img, address, price_level, rating, user_ratings_total, comment, location }){
+    const { setfavoriteList, setMapCenter } = useContext(InformContext)
     let item =""
     const [rest, setRest] = useState()
     const ChosenRestaurantAsync = async () => {
@@ -19,7 +19,7 @@ export default function RestaurantItem({ id, search, api_key, name, isFavorite, 
         ChosenRestaurantAsync()
     };
     const handleLike = async() => {
-        const Alldata=await LikeRestaurant({
+        const Alldata = await LikeRestaurant({
             restaurantName:name,
             address:address,
             priceLevel:price_level,
@@ -33,6 +33,11 @@ export default function RestaurantItem({ id, search, api_key, name, isFavorite, 
             restaurantId:id,
         })
         setfavoriteList(Alldata)
+    }
+    const handleEnter = () => {
+        if (location) {
+            setMapCenter({ lat: location.lat, lng: location.lng })
+        }        
     }
     if (search==="true"){
         item= 
@@ -57,7 +62,7 @@ export default function RestaurantItem({ id, search, api_key, name, isFavorite, 
                         <img className="rounded" src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photo_reference=${img}&key=${api_key}`} alt="" />
                     </div>
                     <div className="col-md-9 ">
-                        <div id="place-name"className="card-header">{isFavorite ? <i className="fa-solid fa-star" onClick={handleUnlike} ></i> :<i className="fa-regular fa-star" onClick={handleLike} ></i>}{name}</div>
+                        <div id="place-name"className="card-header" onMouseEnter={handleEnter} >{isFavorite ? <i className="fa-solid fa-star" onClick={handleUnlike} ></i> :<i className="fa-regular fa-star" onClick={handleLike} ></i>}{name}</div>
                         <div className="card-body d-flex justify-content-between">
                             
                             {item}
