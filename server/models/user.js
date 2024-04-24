@@ -16,6 +16,7 @@ const userSchema = new Schema({
   favoriteRestaurants: [{
     restaurantName: { type: String },
     address: { type: String },
+    isFavorite: { type: Boolean },
     priceLevel: { type: Number },
     restaurantId: { type: String },
     comment: { type: String },

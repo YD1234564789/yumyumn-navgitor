@@ -20,7 +20,6 @@ axiosInstance.interceptors.request.use(
 export const getFavorite = async () => {
   try {
     const res = await axiosInstance.get(`/favorites`);
-    // console.log("RestApi.js 裡的 getFavorite 回傳值: ", res);
     console.log("RestApi.js 裡的 getFavorite 回傳值: ", res.data);
 
     return res.data;

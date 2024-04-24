@@ -3,7 +3,7 @@ import { ChosenRestaurant, LikeRestaurant, UnlikeRestaurant } from "../api/RestA
 import RestItemDetail from "./RestItemDetail";
 import { InformContext } from "../context/InformContext";
 
-export default function RestaurantItem({ id, search, api_key, name, isFavorite, img, address, price_level, rating, user_ratings_total, comment, location }){
+export default function RestaurantItem ({ id, place_id, search, api_key, name, isFavorite, img, address, price_level, rating, user_ratings_total, comment, location }){
     const { setfavoriteList, setMapCenter } = useContext(InformContext)
     let item =""
     const [rest, setRest] = useState()
@@ -30,7 +30,7 @@ export default function RestaurantItem({ id, search, api_key, name, isFavorite, 
     }
     const handleUnlike = async() => {
         const Alldata=await UnlikeRestaurant({
-            restaurantId:id
+            restaurantId: place_id
         })
         setfavoriteList(Alldata)
     }
@@ -59,13 +59,12 @@ export default function RestaurantItem({ id, search, api_key, name, isFavorite, 
             <div className="card text-dark  bg-light mb-1">
                 <div className="row g-0">
                     <div className="col-md-3 d-flex align-items-center justify-content-center" >
-                        {/* 我的最愛分頁可能沒傳入apikey所以圖片無法顯示 */}
                         <img className="rounded" src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photo_reference=${img}&key=${api_key} ` } alt="" />
                     </div>
                     <div className="col-md-9 ">
                         <div id="place-name"className="card-header" onMouseEnter={handleEnter} >{isFavorite ? <i className="fa-solid fa-star" onClick={handleUnlike} ></i> :<i className="fa-regular fa-star" onClick={handleLike} ></i>}{name}</div>
                         <div className="card-body d-flex justify-content-between">
-                            
+
                             {item}
                             <div>
                                 <button className="btn btn-secondary btn-sm" type="button" onClick={handleClick} data-bs-toggle="offcanvas" data-bs-target={`#r${id}`} aria-controls="offcanvas">更多</button>

@@ -16,7 +16,8 @@ const userController = {
         data: {
           token,
           user: userData
-        }
+        },
+        message: '登入成功！'
       })
     } catch (error) {
       next(err)
@@ -53,7 +54,8 @@ const userController = {
                 status: 'success',
                 data: {
                   ...user
-                }
+                },
+                message: '註冊成功！'
               })
             })
             .catch(err => next(err))
@@ -70,7 +72,7 @@ const userController = {
       }
       res.json({ status: 'success', user: userData })
     } catch (err) {
-      console.error('取得最愛餐廳失敗：', err)
+      console.error('取得最愛餐廳失敗，請重試：', err)
       next(err)
     }
   },
@@ -81,6 +83,7 @@ const userController = {
       const favoriteRestaurants = {
         restaurantName,
         address,
+        isFavorite: true,
         priceLevel,
         restaurantId,
         photo
@@ -101,10 +104,10 @@ const userController = {
           // new 會回傳更新後結果, 遮蔽密碼
           { new: true, projection: { password: 0 } }
         )
-        res.json({ status: 'success', data: addFavorite })
+        res.json({ status: 'success', data: addFavorite, message: '加入最愛成功！' })
       }
     } catch (err) {
-      console.error('新增最愛餐廳失敗：', err)
+      console.error('新增最愛餐廳失敗，請重試：', err)
       next(err)
     }
   },
@@ -130,11 +133,11 @@ const userController = {
           { new: true, projection: { password: 0 } }
         )
         // 返回更新後的用戶資料
-        res.json({ status: 'success', data: removeRestaurant })
+        res.json({ status: 'success', data: removeRestaurant, message: '移除最愛成功！' })
       }
 
     } catch (err) {
-      console.error('刪除最愛餐廳失敗：', err)
+      console.error('刪除最愛餐廳失敗，請重試：', err)
       next(err)
     }
   },
@@ -156,9 +159,9 @@ const userController = {
       }
 
       // 返回更新後的用戶資料
-      res.json({ status: 'success', data: updateComment });
+      res.json({ status: 'success', data: updateComment, message: '備註成功！' });
     } catch (err) {
-      console.error('發表評論失敗：', err);
+      console.error('備註失敗請重試：', err);
       next(err)
     }
   }

@@ -29,7 +29,7 @@ const mapController = {
         })
 
         if (updateResults.length > 0) {
-          res.json({ status: 'success', data: updateResults })
+          res.json({ status: 'success', data: updateResults, message: '取得搜索結果！' })
         } else {
           res.json({ status: 'success', data: [], message: '該條件無搜索結果' })
         }
@@ -52,7 +52,7 @@ const mapController = {
       if (result.status === 'OK') {
         res.json({ status: 'success', data: result })
       } else {
-        res.json({ status: result.status, data: result.results })
+        res.json({ status: result.status, data: result.results, message: '取得詳細地點成功！' })
       }
     } catch (error) {
       console.error('無法取得地點詳細資料', error)
