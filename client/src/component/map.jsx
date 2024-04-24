@@ -1,4 +1,4 @@
-import { GoogleMap, useJsApiLoader, LoadScript } from "@react-google-maps/api"
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api"
 import { useState, useEffect, useContext } from "react";
 import { InformContext } from "../context/InformContext";
 
@@ -8,9 +8,8 @@ const containerStyle = {
 };
 
 export default function MapConstructor(){
-    const [mapCenter, setMapCenter] = useState({ lat: 23.553118, lng: 121.0211024 });
     const [zoom, setZoom] = useState(7)
-    const { setUserlocation } = useContext(InformContext)
+    const { setUserlocation, mapCenter, setMapCenter } = useContext(InformContext)
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -35,7 +34,6 @@ export default function MapConstructor(){
         id: "123",
         googleMapsApiKey: YOUR_API_KEY
     })
-
     const handleCenterMapToUserLocation = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
