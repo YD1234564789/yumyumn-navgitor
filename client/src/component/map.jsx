@@ -1,4 +1,4 @@
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api"
+import { GoogleMap,InfoWindow, Marker, useJsApiLoader } from "@react-google-maps/api"
 import { useState, useEffect, useContext } from "react";
 import { InformContext } from "../context/InformContext";
 
@@ -10,6 +10,7 @@ const containerStyle = {
 export default function MapConstructor(){
     const [zoom, setZoom] = useState(7)
     const { setUserlocation, mapCenter, setMapCenter } = useContext(InformContext)
+    const [selectedMarker, setSelectedMarker] = useState("");
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -49,7 +50,6 @@ export default function MapConstructor(){
             console.error('Geolocation is not supported by this browser.');
         }
     };
-
     return isLoaded && (
         <div id="map-container">
             <GoogleMap
@@ -57,6 +57,27 @@ export default function MapConstructor(){
                 center={mapCenter}
                 zoom={zoom}
             >
+                <Marker position={mapCenter} onClick={() => {
+                    console.log("mapCenter",mapCenter)
+                    console.log("selectedMarker",selectedMarker)
+                    setSelectedMarker(mapCenter)
+                }} />
+                {selectedMarker && (
+                    <InfoWindow
+                    position={mapCenter}
+                    options={{
+                        pixelOffset: new window.google.maps.Size(0, -40),
+                    }}
+                    >
+                        <div>
+                            <h6>店名：</h6>
+                            <p>地址：</p>
+                            <p>價位：</p>
+                            <p>評分：(評論數)</p>
+                            <button>close</button>
+                        </div>
+                    </InfoWindow>
+                )}
                 <button className="reload" onClick={handleCenterMapToUserLocation}>
                     我的位置
                 </button>

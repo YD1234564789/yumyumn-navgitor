@@ -100,7 +100,11 @@ i{
   overflow: hidden;
 }
 .offcanvas{
-
+  width:500px;
+  .offcanvas-title{
+    font-weight: 700;
+    font-size:1.5em;
+  }
   .accordion-item{
     margin-bottom:1em;
     border:none;
@@ -110,4 +114,11 @@ i{
       border:none;
     }
   }
+}
+.reviewlist{
+  max-height: 300px;
+  padding: 16px;
+  border: 1px solid #a7aaaf;
+  border-radius: 5px;
+  overflow-y: scroll;
 }
