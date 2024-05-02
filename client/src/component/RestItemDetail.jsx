@@ -1,4 +1,6 @@
-export default function RestItemDetail ({id, api_key, data=[]}) {
+import Comment from "./Comment";
+
+export default function RestItemDetail ({id, api_key, data=[], search}) {
     function openHour() {
         if (data.opening_hours){
             const hours = data.opening_hours.weekday_text.map ( hour => {
@@ -30,7 +32,7 @@ export default function RestItemDetail ({id, api_key, data=[]}) {
         }
     }
     return (
-        <div className="offcanvas offcanvas-start" tabIndex="-1" id={`r${id}`} aria-labelledby={id}>        
+        <div className="offcanvas offcanvas-start" tabIndex="-1" id={`${search}${id}`} aria-labelledby={id}>        
             <div id="carouselExample" className="carousel slide">
                 <div className="carousel-inner">
                     {photosCollection()}
@@ -49,29 +51,26 @@ export default function RestItemDetail ({id, api_key, data=[]}) {
                 <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div className="offcanvas-body">
-                <div>
-                    <p><i className="fa-solid fa-dollar-sign"></i>價格：{data.price_level}</p>
-                    <p><i className="fa-solid fa-utensils"></i>餐廳類型：</p>
-                </div>
-                <div>
-                    <p><i className="fa-solid fa-location-dot"></i> 地址：{data.formatted_address}</p>                    
-                    <div className="accordion" id="accordionExample">
-                        <div className="accordion-item">
-                            <h2 className="accordion-header">
-                                <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    <i className="fa-regular fa-calendar-days"></i>營業時間
-                                </button>
-                            </h2>
-                            <div id="collapseOne" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                <div className="accordion-body">
-                                    {openHour()}
-                                </div>
+                <p><i className="fa-solid fa-dollar-sign"></i>價格：{data.price_level}</p>
+                <p><i className="fa-solid fa-utensils"></i>餐廳類型：</p>
+                <p><i className="fa-solid fa-location-dot"></i> 地址：{data.formatted_address}</p>                    
+                <div className="accordion" id="accordionExample">
+                    <div className="accordion-item">
+                        <h2 className="accordion-header">
+                            <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <i className="fa-regular fa-calendar-days"></i>營業時間
+                            </button>
+                        </h2>
+                        <div id="collapseOne" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div className="accordion-body">
+                                {openHour()}
                             </div>
                         </div>
                     </div>
-                    <p><i className="fa-solid fa-globe"></i>網址：<a href={data.website} target="_blank" rel="noreferrer">{data.website}</a></p>
-                    <p><i className="fa-solid fa-phone"></i>電話：{data.formatted_phone_number}</p>
                 </div>
+                <p><i className="fa-solid fa-globe"></i>網址：<a href={data.website} target="_blank" rel="noreferrer">{data.website}</a></p>
+                <p><i className="fa-solid fa-phone"></i>電話：{data.formatted_phone_number}</p>
+                <Comment data={data} />
             </div>
         </div> 
     )

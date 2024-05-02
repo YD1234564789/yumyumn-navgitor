@@ -5,7 +5,7 @@ import RestaurantItem from "./RestaurantItem";
 import MapConstructor from "./map";
 
 export default function MainContainer(){
-    const { restaurantsResult } = useContext(InformContext)
+    const { restaurantsResult, setRestaurantsResult } = useContext(InformContext)
     const [ favorite, setFavorite ] = useState([]);
     const getFavoriteAsync = async () => {
         try {
@@ -15,20 +15,58 @@ export default function MainContainer(){
             console.error(error);
         }
     };
+    const DeleteFavorite = (id) => {
+        setRestaurantsResult((items) =>{
+            return items.map((item) =>{
+                if (item.place_id === id) {
+                    return {
+                        ...item,
+                        isFavorite: !item.isFavorite
+                    }
+                }
+                return item
+            })
+        })
+        setFavorite((items)=>{
+            return items.filter ((data) => data.restaurantId !== id)
+        })
+    }
+    const AddFavorite = (data, id) => {
+        setFavorite(data.data.favoriteRestaurants)
+        setRestaurantsResult((items) =>{
+            return items.map((item) =>{
+                if (item.place_id === id) {
+                    return {
+                        ...item,
+                        isFavorite: !item.isFavorite
+                    }
+                }
+                return item
+            })
+        })
+    }
     useEffect(() => {
         getFavoriteAsync();
     }, []);
-    const SearchCollection = restaurantsResult.map(data => {
-        return (
-            <RestaurantItem key={data.place_id} id={data.place_id} search="true" api_key={process.env.REACT_APP_GOOGLE_MAPS_KEY} name={data.name} img={data.photos[0].photo_reference} isFavorite={data.isFavorite} address={data.vicinity} price_level={data.price_level} rating={data.rating} user_ratings_total={data.user_ratings_total} location={data.geometry.location} />
-        )
-    })
+    const SearchCollection = () => {
+        if (restaurantsResult) {
+            const result =restaurantsResult.map(data => {
+                return (
+                    <RestaurantItem key={data.place_id} id={data.place_id} search="true" api_key={process.env.REACT_APP_GOOGLE_MAPS_KEY} name={data.name} img={data.photos[0].photo_reference} isFavorite={data.isFavorite} address={data.vicinity} price_level={data.price_level} rating={data.rating} user_ratings_total={data.user_ratings_total} location={data.geometry.location} onAdd={AddFavorite} onDelete={DeleteFavorite} />
+                )
+            })
+            return result
+        }else{
+            return
+        }
+    }
     //記得加自己的備註
     const FavoriteCollection = favorite.map( data => {
         return (
-            <RestaurantItem key={data._id} id={data._id} place_id={data.restaurantId} search="false" api_key={process.env.REACT_APP_GOOGLE_MAPS_KEY} name={data.restaurantName} img={data.photo} address={data.address} price_level={data.priceLevel} isFavorite= {data.isFavorite} comment={data.comment} />
+            <RestaurantItem key={data.restaurantId} id={data.restaurantId} search="false" api_key={process.env.REACT_APP_GOOGLE_MAPS_KEY} name={data.restaurantName} img={data.photo} address={data.address} price_level={data.priceLevel} isFavorite= {data.isFavorite} comment={data.comment} onDelete={DeleteFavorite}/>
         )
     })
+
     return (
         <div className="main-contain h-100">
             <div className="row main-wrapper">
@@ -42,7 +80,7 @@ export default function MainContainer(){
                     </nav>
                     <div className="tab-content overflow-auto" id="nav-tabContent">
                         <div className="tab-pane fade show active" id="search-results" role="tabpanel" aria-labelledby="search-results-tab" tabIndex="0">
-                            {SearchCollection}
+                            {SearchCollection()}
                         </div>
                         <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="search-results-tab" tabIndex="0">
                             {FavoriteCollection}
