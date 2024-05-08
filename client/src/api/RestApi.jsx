@@ -38,10 +38,11 @@ export const ChosenRestaurant = async ( id ) => {
   }
 }
 
-export const LikeRestaurant = async ({ restaurantName, address, priceLevel, restaurantId, photo, location}) => {
+export const LikeRestaurant = async ({ restaurantName, address, priceLevel, restaurantId, photo, location, userRatingsTotal,
+  rating }) => {
   try {
     const res = await axiosInstance.post(`/favorite`, {
-      restaurantName, address, priceLevel, restaurantId, photo, location
+      restaurantName, address, priceLevel, restaurantId, photo, location, userRatingsTotal, rating
     });
     console.log("RestApi.js 裡的 LikeRestaurant 回傳值: ", res.data);
     return res.data;

@@ -28,7 +28,9 @@ export default function RestaurantItem ({ id, search, api_key, name, isFavorite,
             priceLevel:price_level,
             restaurantId:id,
             photo:img,
-            location
+            location,
+            userRatingsTotal: user_ratings_total,
+            rating
         })
         onAdd(Alldata, id)
         alert(`${Alldata.message}`)
@@ -49,17 +51,22 @@ export default function RestaurantItem ({ id, search, api_key, name, isFavorite,
     if (search==="true"){
         item= 
             <div>
-                {rating}{StarRating(rating)}({user_ratings_total}則評論){PriceLevel(price_level)}
-                <div className="openNow">{openNow}</div>
-                <div>{address}</div>
-            </div>        
+                <div className="d-flex">
+                    {rating}{StarRating(rating)}({user_ratings_total}則評論){PriceLevel(price_level)}
+                </div>
+                <div className={openNow === "營業中" ? 'openNow' : 'closeNow'}>{openNow}</div>
+                <div>
+                    {address}
+                </div>
+            </div>
     }else{
         item= 
             <div>
-                {rating}{StarRating(rating)}({user_ratings_total}則評論){PriceLevel(price_level)}
-                <div className="openNow">{openNow}</div>
+                <div className="d-flex">
+                    {rating}{StarRating(rating)}({user_ratings_total}則評論){PriceLevel(price_level)}
+                </div>
                 <div>{address}</div>
-                <p>備註：{comment}</p>
+                <div>備註：{comment}</div>
             </div>        
     }
     return(
