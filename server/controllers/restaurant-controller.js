@@ -6,7 +6,7 @@ const mapController = {
     const { type, rating, distance, priceLevel, latitude, longitude } = req.body
     try {
       const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=${type}餐廳&location=${latitude},${longitude}&radius=${distance}&opennow=true&minprice=0&maxprice=${priceLevel}&type=restaurant&key=${API_KEY}`
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?language=zh-TW&region=TW&keyword=${type}餐廳&location=${latitude},${longitude}&radius=${distance}&opennow=true&minprice=0&maxprice=${priceLevel}&type=restaurant&key=${API_KEY}`
       )
       const results = response.data
       const userId = req.user._id
@@ -47,12 +47,13 @@ const mapController = {
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/place/details/json?fields=photos,name,rating,user_ratings_total,price_level,business_status,formatted_address,opening_hours,website,formatted_phone_number,reviews,url&language=zh-TW&place_id=${rid}&key=${API_KEY}`
       )
-      const result = response.data
-      console.log('result', result)
-      if (result.status === 'OK') {
+      const { data } = response
+      if (data.status === 'OK') {
+        const parsedUrl = new URL(data.result.website).hostname
+        const result = { ...data.result, parsedUrl }
         res.json({ status: 'success', data: result })
       } else {
-        res.json({ status: result.status, data: result.results, message: '取得詳細地點成功！' })
+        res.json({ status: data.status, data: result, message: 'status != OK' })
       }
     } catch (error) {
       console.error('無法取得地點詳細資料', error)

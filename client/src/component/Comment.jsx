@@ -1,6 +1,6 @@
 export default function Comment ({data=[]}) {
     const CommentCollection = () => {
-        console.log(data.reviews)
+        // console.log(data.reviews)
         if(data.reviews){
             const reviewlist = data.reviews.map((item) =>{
                 return(

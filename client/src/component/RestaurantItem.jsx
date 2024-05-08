@@ -10,7 +10,7 @@ export default function RestaurantItem ({ id, search, api_key, name, isFavorite,
     const ChosenRestaurantAsync = async () => {
         try {
             const favorites = await ChosenRestaurant(id);
-            setRest(favorites.data.result)
+            setRest(favorites.data)
         } catch (error) {
             console.error(error);
         }
@@ -25,6 +25,7 @@ export default function RestaurantItem ({ id, search, api_key, name, isFavorite,
             priceLevel:price_level,
             restaurantId:id,
             photo:img,
+            location
         })
         onAdd(Alldata, id)
         alert(`${Alldata.message}`)

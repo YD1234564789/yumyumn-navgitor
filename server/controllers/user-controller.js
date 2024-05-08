@@ -2,10 +2,6 @@ const User = require('../models/user')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const userController = {
-  // 測試連接使用
-  hello: (req, res) => {
-    res.json({ "users": ["userOne", "userTwo", "userThree"]})
-  },
   login: (req, res, next) => {
     try {
       const userData = req.user.toJSON()
@@ -78,11 +74,12 @@ const userController = {
   },
   addFavorite: async (req, res, next) => {
     try {
-      const { restaurantName, address, priceLevel, restaurantId, photo } = req.body
+      const { restaurantName, address, priceLevel, restaurantId, photo, location } = req.body
       const userId = req.user._id
       const favoriteRestaurants = {
         restaurantName,
         address,
+        location,
         isFavorite: true,
         priceLevel,
         restaurantId,

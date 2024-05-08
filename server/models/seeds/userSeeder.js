@@ -12,6 +12,10 @@ db.once('open', async () => {
       favoriteRestaurants: [{
         restaurantName: 'B Line by A Train',
         address: '忠孝東路二段104號2樓',
+        location: {
+          lat: 25.0425837,
+          lng: 121.5306308
+        },
         priceLevel: 2,
         isFavorite: true,
         restaurantId: 'ChIJ81hgenupQjQR3tQOkVvFWto',
@@ -20,6 +24,10 @@ db.once('open', async () => {
       },{
         restaurantName: '麵屋雞金 光華店',
         address: '新生南路一段6號1樓',
+        location: {
+          lat: 25.0440359,
+          lng: 121.53013
+        },
         priceLevel: 2,
         isFavorite: true,
         restaurantId: 'ChIJwTPCxfKpQjQRb69IzY6LiqQ',

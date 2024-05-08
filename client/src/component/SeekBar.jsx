@@ -13,7 +13,7 @@ export default function FruitPicker() {
             value={selectedFruit}
             onChange={e => {
                 setSelectedFruit(e.target.value)
-                console.log(selectedFruit)
+                // console.log(selectedFruit)
                 setList({ ...list, [e.target.name]:e.target.value})
                 console.log(list)
             }}

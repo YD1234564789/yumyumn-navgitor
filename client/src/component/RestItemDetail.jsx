@@ -68,7 +68,7 @@ export default function RestItemDetail ({id, api_key, data=[], search}) {
                         </div>
                     </div>
                 </div>
-                <p><i className="fa-solid fa-globe"></i>網址：<a href={data.website} target="_blank" rel="noreferrer">{data.website}</a></p>
+                <p><i className="fa-solid fa-globe"></i>網址：<a href={data.website} target="_blank" rel="noreferrer">{data.parsedUrl}</a></p>
                 <p><i className="fa-solid fa-phone"></i>電話：{data.formatted_phone_number}</p>
                 <Comment data={data} />
             </div>

@@ -7,7 +7,6 @@ const restaurantController = require('../controllers/restaurant-controller')
 const userController = require('../controllers/user-controller')
 
 
-router.get('/api', userController.hello)
 //  餐廳相關
 router.get('/restaurants/:rid', authenticated, restaurantController.getRestaurant)
 router.post('/restaurants', authenticated, restaurantController.getRestaurants)

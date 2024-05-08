@@ -63,7 +63,7 @@ export default function MainContainer(){
     //記得加自己的備註
     const FavoriteCollection = favorite.map( data => {
         return (
-            <RestaurantItem key={data.restaurantId} id={data.restaurantId} search="false" api_key={process.env.REACT_APP_GOOGLE_MAPS_KEY} name={data.restaurantName} img={data.photo} address={data.address} price_level={data.priceLevel} isFavorite= {data.isFavorite} comment={data.comment} onDelete={DeleteFavorite}/>
+            <RestaurantItem key={data.restaurantId} id={data.restaurantId} search="false" api_key={process.env.REACT_APP_GOOGLE_MAPS_KEY} name={data.restaurantName} img={data.photo} address={data.address} price_level={data.priceLevel} isFavorite={data.isFavorite} comment={data.comment} location={data.location} onDelete={DeleteFavorite}/>
         )
     })
 
