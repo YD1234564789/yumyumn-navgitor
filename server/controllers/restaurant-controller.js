@@ -49,11 +49,13 @@ const mapController = {
       )
       const { data } = response
       if (data.status === 'OK') {
-        const parsedUrl = new URL(data.result.website).hostname
-        const result = { ...data.result, parsedUrl }
-        res.json({ status: 'success', data: result })
-      } else {
-        res.json({ status: data.status, data: result, message: 'status != OK' })
+        if (!data.result.website) {
+          res.json({ status: 'success', data: data.result })
+        } else {
+          const parsedUrl = new URL(data.result.website).hostname
+          const result = { ...data.result, parsedUrl }
+          res.json({ status: 'success', data: result })
+        }
       }
     } catch (error) {
       console.error('無法取得地點詳細資料', error)

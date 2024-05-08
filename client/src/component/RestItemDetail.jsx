@@ -1,4 +1,6 @@
 import Comment from "./Comment";
+import StarRating from "./StarRating"
+import PriceLevel from "./PriceLevel"
 
 export default function RestItemDetail ({id, api_key, data=[], search}) {
     function openHour() {
@@ -17,13 +19,13 @@ export default function RestItemDetail ({id, api_key, data=[], search}) {
                 if (photo === data.photos[0]){
                     return (
                         <div className="carousel-item active">
-                            <img src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photo_reference=${photo.photo_reference}&key=${api_key}`} className="d-block w-100" alt="..." />
+                            <img src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=450&photo_reference=${photo.photo_reference}&key=${api_key}`} className="d-block w-100" alt="..." />
                         </div>
                     )
                 }else{
                     return (
                         <div className="carousel-item">
-                            <img src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photo_reference=${photo.photo_reference}&key=${api_key}`} className="d-block w-100" alt="..." />
+                            <img src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=450&photo_reference=${photo.photo_reference}&key=${api_key}`} className="d-block w-100" alt="..." />
                         </div>
                     )
                 }    
@@ -49,16 +51,15 @@ export default function RestItemDetail ({id, api_key, data=[], search}) {
             <div className="offcanvas-header">
                 <h5 className="offcanvas-title" id={`${id}Label`}>{data.name}</h5>
                 <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <div className="offcanvas-subtitle" >{data.rating} {StarRating(data.rating)} ({data.user_ratings_total})．{PriceLevel(data.price_level)}</div>
             </div>
             <div className="offcanvas-body">
-                <p><i className="fa-solid fa-dollar-sign"></i>價格：{data.price_level}</p>
-                <p><i className="fa-solid fa-utensils"></i>餐廳類型：</p>
-                <p><i className="fa-solid fa-location-dot"></i> 地址：{data.formatted_address}</p>                    
+                <p><i className="fa fa-solid fa-location-dot"></i> 地址：{data.formatted_address}</p>                    
                 <div className="accordion" id="accordionExample">
                     <div className="accordion-item">
                         <h2 className="accordion-header">
                             <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                <i className="fa-regular fa-calendar-days"></i>營業時間
+                                <i className="fa fa-regular fa-calendar-days"></i>營業時間
                             </button>
                         </h2>
                         <div id="collapseOne" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
@@ -68,8 +69,8 @@ export default function RestItemDetail ({id, api_key, data=[], search}) {
                         </div>
                     </div>
                 </div>
-                <p><i className="fa-solid fa-globe"></i>網址：<a href={data.website} target="_blank" rel="noreferrer">{data.parsedUrl}</a></p>
-                <p><i className="fa-solid fa-phone"></i>電話：{data.formatted_phone_number}</p>
+                <p><i className="fa fa-solid fa-globe"></i>網址：<a href={data.website} target="_blank" rel="noreferrer">{data.parsedUrl}</a></p>
+                <p><i className="fa fa-solid fa-phone"></i>電話：{data.formatted_phone_number}</p>
                 <Comment data={data} />
             </div>
         </div> 

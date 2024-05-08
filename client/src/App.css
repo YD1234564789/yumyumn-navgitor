@@ -100,10 +100,26 @@ i{
   overflow: hidden;
 }
 .offcanvas{
-  width:500px;
+  width:450px !important;
+  .offcanvas-header {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+  }
   .offcanvas-title{
     font-weight: 700;
-    font-size:1.5em;
+    font-size:1.3em;
+  }
+  .offcanvas-subtitle{
+    display: flex;
+    .fa-solid {
+      margin: 0px;
+    }
+  }
+  .offcanvas-body {
+    .fa {
+      color: #1a73e8;
+    }
   }
   .accordion-item{
     margin-bottom:1em;
