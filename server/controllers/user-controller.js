@@ -74,12 +74,14 @@ const userController = {
   },
   addFavorite: async (req, res, next) => {
     try {
-      const { restaurantName, address, priceLevel, restaurantId, photo, location } = req.body
+      const { restaurantName, address, priceLevel, restaurantId, photo, location, rating, userRatingTotal } = req.body
       const userId = req.user._id
       const favoriteRestaurants = {
         restaurantName,
         address,
         location,
+        rating,
+        userRatingTotal,
         isFavorite: true,
         priceLevel,
         restaurantId,

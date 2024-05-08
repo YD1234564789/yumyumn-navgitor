@@ -2,8 +2,11 @@ import { useState, useContext } from "react";
 import { ChosenRestaurant, LikeRestaurant, UnlikeRestaurant } from "../api/RestApi";
 import { InformContext } from "../context/InformContext";
 import RestItemDetail from "./RestItemDetail";
+import StarRating from "./StarRating"
+import PriceLevel from "./PriceLevel"
 
-export default function RestaurantItem ({ id, search, api_key, name, isFavorite, img, address, price_level, rating, user_ratings_total, comment, location, onAdd, onDelete}){
+
+export default function RestaurantItem ({ id, search, api_key, name, isFavorite, img, address, price_level, rating, user_ratings_total, comment, openNow, location, onAdd, onDelete}){
     const { setfavoriteList, setMapCenter } = useContext(InformContext)
     let item =""
     const [rest, setRest] = useState()
@@ -46,15 +49,16 @@ export default function RestaurantItem ({ id, search, api_key, name, isFavorite,
     if (search==="true"){
         item= 
             <div>
-                <p>地址：{address}</p>
-                <p>價位：{price_level}</p>
-                <p>評分：{rating} ({user_ratings_total}則評論)</p>
+                {rating}{StarRating(rating)}({user_ratings_total}則評論){PriceLevel(price_level)}
+                <div className="openNow">{openNow}</div>
+                <div>{address}</div>
             </div>        
     }else{
         item= 
             <div>
-                <p>地址：{address}</p>
-                <p>價位：{price_level}</p>
+                {rating}{StarRating(rating)}({user_ratings_total}則評論){PriceLevel(price_level)}
+                <div className="openNow">{openNow}</div>
+                <div>{address}</div>
                 <p>備註：{comment}</p>
             </div>        
     }
@@ -66,7 +70,7 @@ export default function RestaurantItem ({ id, search, api_key, name, isFavorite,
                         <img className="rounded" src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photo_reference=${img}&key=${api_key} ` } alt="" />
                     </div>
                     <div className="col-md-9 ">
-                        <div id="place-name"className="card-header" >{isFavorite ? <i className="fa-solid fa-star" onClick={handleUnlike} ></i> :<i className="fa-regular fa-star" onClick={handleLike} ></i>}{name}</div>
+                        <div id="place-name"className="card-header" >{isFavorite ? <i className="fa-solid fa-heart" onClick={handleUnlike} ></i> :<i className="fa-regular fa-heart" onClick={handleLike} ></i>}{name}</div>
                         <div className="card-body d-flex justify-content-between">
                             {item}
                             <div>

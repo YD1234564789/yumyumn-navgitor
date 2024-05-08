@@ -6,7 +6,7 @@ const mapController = {
     const { type, rating, distance, priceLevel, latitude, longitude } = req.body
     try {
       const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?language=zh-TW&region=TW&keyword=${type}餐廳&location=${latitude},${longitude}&radius=${distance}&opennow=true&minprice=0&maxprice=${priceLevel}&type=restaurant&key=${API_KEY}`
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?language=zh-TW&region=TW&keyword=${type}餐廳&location=${latitude},${longitude}&radius=${distance}&minprice=0&maxprice=${priceLevel}&type=restaurant&key=${API_KEY}`
       )
       const results = response.data
       const userId = req.user._id
@@ -16,16 +16,18 @@ const mapController = {
       if (results.status === 'OK') {
         // 篩選符合評價結果
         const rateFilter = results.results.filter(result => result.rating > rating)
+        // 撈用戶ID跟餐廳ID
         const user = await User.find({ _id: userId }).select('favoriteRestaurants')
         const favoriteRestaurantIds = user[0].favoriteRestaurants.map(restaurant => restaurant.restaurantId)
-
+        
         const updateResults = rateFilter.map(result => {
           if (favoriteRestaurantIds.includes(result.place_id)) {
             result.isFavorite = true
           } else {
             result.isFavorite = false
           }
-          return result
+          const openNow = result.opening_hours.open_now? "營業中" : "已打烊"
+          return {...result, openNow}
         })
 
         if (updateResults.length > 0) {
@@ -48,12 +50,13 @@ const mapController = {
         `https://maps.googleapis.com/maps/api/place/details/json?fields=photos,name,rating,user_ratings_total,price_level,business_status,formatted_address,opening_hours,website,formatted_phone_number,reviews,url&language=zh-TW&place_id=${rid}&key=${API_KEY}`
       )
       const { data } = response
+      const openNow = data.result.opening_hours.open_now?"營業中" : "已打烊"
       if (data.status === 'OK') {
         if (!data.result.website) {
-          res.json({ status: 'success', data: data.result })
+          res.json({ status: 'success', data: {...data.result, openNow}})
         } else {
           const parsedUrl = new URL(data.result.website).hostname
-          const result = { ...data.result, parsedUrl }
+          const result = { ...data.result, parsedUrl, openNow }
           res.json({ status: 'success', data: result })
         }
       }

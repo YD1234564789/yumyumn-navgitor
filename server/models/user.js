@@ -20,6 +20,8 @@ const userSchema = new Schema({
       lat: { type: Number },
       lng: { type: Number }
     },
+    rating: { type: Number },
+    userRatingsTotal: { type: Number },
     isFavorite: { type: Boolean },
     priceLevel: { type: Number },
     restaurantId: { type: String },

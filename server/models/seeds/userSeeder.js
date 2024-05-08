@@ -16,6 +16,8 @@ db.once('open', async () => {
           lat: 25.0425837,
           lng: 121.5306308
         },
+        rating: 3,
+        userRatingsTotal: 544,
         priceLevel: 2,
         isFavorite: true,
         restaurantId: 'ChIJ81hgenupQjQR3tQOkVvFWto',
@@ -28,6 +30,8 @@ db.once('open', async () => {
           lat: 25.0440359,
           lng: 121.53013
         },
+        rating: 3,
+        userRatingsTotal: 234,
         priceLevel: 2,
         isFavorite: true,
         restaurantId: 'ChIJwTPCxfKpQjQRb69IzY6LiqQ',

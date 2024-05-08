@@ -1,5 +1,15 @@
+
+body {
+  font-family: "Google Sans", Roboto, "Noto Sans TC", Arial, sans-serif !important;
+}
 i{
   margin-right: 5px;
+}
+.noto-sans-tc-4 {
+  font-family: "Noto Sans TC", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
 }
 #background{
   background-image: url(https://img.freepik.com/free-photo/delicious-healthy-asian-food-gray-textured-background-with-copy-space_24972-1022.jpg?w=996&t=st=1705566580~exp=1705567180~hmac=8cf44e4f668108e3f9381440ee24249abd6b4c6bf6b9abff879a60309c9a78bd);
@@ -95,6 +105,19 @@ i{
 #nav-tabContent{
   max-height: 560px;
 }
+.card {
+  overflow: hidden;
+  img {
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+  display: block;
+  margin: auto;
+  }
+  .card-header i {
+      color: #ec323b
+    }
+}
 .carousel-item{
   height: 250px;
   overflow: hidden;
@@ -105,6 +128,7 @@ i{
     display: flex;
     align-items: flex-start;
     flex-direction: column;
+    padding: 16px 24px 4px;
   }
   .offcanvas-title{
     font-weight: 700;
@@ -112,13 +136,15 @@ i{
   }
   .offcanvas-subtitle{
     display: flex;
+    margin-top: 8px;
     .fa-solid {
       margin: 0px;
     }
   }
   .offcanvas-body {
-    .fa {
+    i {
       color: #1a73e8;
+      margin-right: 8px;
     }
   }
   .accordion-item{

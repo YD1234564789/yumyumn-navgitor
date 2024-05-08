@@ -52,7 +52,7 @@ export default function MainContainer(){
         if (restaurantsResult) {
             const result =restaurantsResult.map(data => {
                 return (
-                    <RestaurantItem key={data.place_id} id={data.place_id} search="true" api_key={process.env.REACT_APP_GOOGLE_MAPS_KEY} name={data.name} img={data.photos[0].photo_reference} isFavorite={data.isFavorite} address={data.vicinity} price_level={data.price_level} rating={data.rating} user_ratings_total={data.user_ratings_total} location={data.geometry.location} onAdd={AddFavorite} onDelete={DeleteFavorite} />
+                    <RestaurantItem key={data.place_id} id={data.place_id} search="true" api_key={process.env.REACT_APP_GOOGLE_MAPS_KEY} name={data.name} img={data.photos[0].photo_reference} openNow={data.openNow} isFavorite={data.isFavorite} address={data.vicinity} price_level={data.price_level} rating={data.rating} user_ratings_total={data.user_ratings_total} location={data.geometry.location} onAdd={AddFavorite} onDelete={DeleteFavorite} />
                 )
             })
             return result
@@ -63,7 +63,7 @@ export default function MainContainer(){
     //記得加自己的備註
     const FavoriteCollection = favorite.map( data => {
         return (
-            <RestaurantItem key={data.restaurantId} id={data.restaurantId} search="false" api_key={process.env.REACT_APP_GOOGLE_MAPS_KEY} name={data.restaurantName} img={data.photo} address={data.address} price_level={data.priceLevel} isFavorite={data.isFavorite} comment={data.comment} location={data.location} onDelete={DeleteFavorite}/>
+            <RestaurantItem key={data.restaurantId} id={data.restaurantId} search="false" api_key={process.env.REACT_APP_GOOGLE_MAPS_KEY} name={data.restaurantName} img={data.photo} address={data.address} price_level={data.priceLevel} rating= {data.rating} user_ratings_total= {data.userRatingsTotal} openNow={data.openNow} isFavorite={data.isFavorite} comment={data.comment} location={data.location} onDelete={DeleteFavorite}/>
         )
     })
 
