@@ -6,7 +6,7 @@ import StarRating from "./StarRating"
 import PriceLevel from "./PriceLevel"
 
 
-export default function RestaurantItem ({ id, search, api_key, name, isFavorite, img, address, price_level, rating, user_ratings_total, comment, openNow, location, onAdd, onDelete}){
+export default function RestaurantItem ({ id, search, api_key, name, isFavorite, img, address, price_level, rating, user_ratings_total, comment, openNow, location, onAdd, onDelete, mapRef}){
     const { setfavoriteList, setMapCenter } = useContext(InformContext)
     let item =""
     const [rest, setRest] = useState()
@@ -46,6 +46,7 @@ export default function RestaurantItem ({ id, search, api_key, name, isFavorite,
     const handleEnter = () => {
         if (location) {
             setMapCenter({ lat: location.lat, lng: location.lng })
+            // mapRef.current.panTo({ lat: location.lat, lng: location.lng })
         }        
     }
     if (search==="true"){
