@@ -35,15 +35,15 @@ export default function RestItemDetail ({id, api_key, data=[], search}) {
     }
     return (
         <div className="offcanvas offcanvas-start" tabIndex="-1" id={`${search}${id}`} aria-labelledby={id}>        
-            <div id="carouselExample" className="carousel slide">
+            <div id={`${search}${id}carousel`} className="carousel slide">
                 <div className="carousel-inner">
                     {photosCollection()}
                 </div>
-                <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <button className="carousel-control-prev" type="button" data-bs-target={`#${search}${id}carousel`} data-bs-slide="prev">
                     <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span className="visually-hidden">Previous</span>
                 </button>
-                <button className="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <button className="carousel-control-next" type="button" data-bs-target={`#${search}${id}carousel`} data-bs-slide="next">
                     <span className="carousel-control-next-icon" aria-hidden="true"></span>
                     <span className="visually-hidden">Next</span>
                 </button>
@@ -54,11 +54,9 @@ export default function RestItemDetail ({id, api_key, data=[], search}) {
             </div>
 
             <div className="offcanvas-body">
-                <p><i className="info fa-lg fa-solid fa-location-dot"></i> 地址：{data.formatted_address}</p>     
-
+                <p><i className="info fa-lg fa-solid fa-location-dot"></i> 地址：{data.formatted_address}</p>    
                 <div className="accordion">
                     <div className="accordion-item">
-
                         <h2 className="accordion-header" id="headingOne">
                             <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                 <i className="info fa-lg fa-regular fa-calendar-days"></i><span className={data.openNow === "營業中"? 'openNow' :'closeNow' }>{data.openNow}</span>．營業時間
@@ -69,12 +67,10 @@ export default function RestItemDetail ({id, api_key, data=[], search}) {
                                 {openHour()}
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <p><i className="info fa-lg fa-solid fa-earth-americas"></i>網址：<a href={data.website} target="_blank" rel="noreferrer">{data.parsedUrl}</a></p>
                 <p><i className="info fa-lg fa-solid fa-phone"></i>電話：{data.formatted_phone_number}</p>
-                
                 <Comments data={data.reviews} />
             </div>
         </div> 
