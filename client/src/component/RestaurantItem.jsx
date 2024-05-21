@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { ChosenRestaurant, LikeRestaurant, UnlikeRestaurant, ChangeComment } from "../api/RestApi";
 import { InformContext } from "../context/InformContext";
 import RestItemDetail from "./RestItemDetail";
@@ -106,8 +106,8 @@ export default function RestaurantItem ({ id, search, api_key, name, isFavorite,
         <div>
             <div className="card text-dark  bg-light mb-1">
                 <div className="row g-0" onMouseEnter={handleEnter}>
-                    <div className="col-md-3 d-flex align-items-center justify-content-center" >
-                        <img className="rounded" src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photo_reference=${img}&key=${api_key}` } alt="" />
+                    <div className="col-md-3 d-flex align-items-center justify-content-center img-area" >
+                        <img className="rounded " src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photo_reference=${img}&key=${api_key} ` } alt="" />
                     </div>
                     <div className="col-md-9 ">
                         <div id="place-name"className="card-header" >{isFavorite ? <i className="fa-solid fa-heart" onClick={handleUnlike} ></i> :<i className="fa-regular fa-heart" onClick={handleLike} ></i>}{name}</div>

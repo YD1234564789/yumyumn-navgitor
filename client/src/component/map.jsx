@@ -1,5 +1,5 @@
 import { GoogleMap,InfoWindow, Marker, useJsApiLoader } from "@react-google-maps/api"
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useContext } from "react";
 import { InformContext } from "../context/InformContext";
 import StarRating from "./StarRating"
 import PriceLevel from "./PriceLevel"
@@ -11,7 +11,7 @@ const containerStyle = {
 
 export default function MapConstructor(){
     const [zoom, setZoom] = useState(7)
-    const { userlocation, setUserlocation, mapCenter, setMapCenter, restaurantsResult, setRestaurantsResult, searchr } = useContext(InformContext)
+    const { userlocation, setUserlocation, mapCenter, setMapCenter, restaurantsResult, searchr } = useContext(InformContext)
     const [selectedMarker, setSelectedMarker] = useState("");
 
     useEffect(() => {
@@ -38,7 +38,7 @@ export default function MapConstructor(){
                 setZoom(16);
                 break;
             case "300":
-                setZoom(16);
+                setZoom(15.5);
                 break;
             case "600":
                 setZoom(15);
