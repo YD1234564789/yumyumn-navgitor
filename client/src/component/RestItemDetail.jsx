@@ -35,15 +35,15 @@ export default function RestItemDetail ({id, api_key, data=[], search}) {
     }
     return (
         <div className="offcanvas offcanvas-start" tabIndex="-1" id={`${search}${id}`} aria-labelledby={id}>        
-            <div id={`${search}${id}carousel`} className="carousel slide">
+            <div id={`${search}${id}photo`} className="carousel slide">
                 <div className="carousel-inner">
                     {photosCollection()}
                 </div>
-                <button className="carousel-control-prev" type="button" data-bs-target={`#${search}${id}carousel`} data-bs-slide="prev">
+                <button className="carousel-control-prev" type="button" data-bs-target={`#${search}${id}photo`} data-bs-slide="prev">
                     <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span className="visually-hidden">Previous</span>
                 </button>
-                <button className="carousel-control-next" type="button" data-bs-target={`#${search}${id}carousel`} data-bs-slide="next">
+                <button className="carousel-control-next" type="button" data-bs-target={`#${search}${id}photo`} data-bs-slide="next">
                     <span className="carousel-control-next-icon" aria-hidden="true"></span>
                     <span className="visually-hidden">Next</span>
                 </button>

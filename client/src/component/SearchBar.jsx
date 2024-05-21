@@ -9,7 +9,7 @@ import { SearchApi } from '../api/SearchApi';
 //https://codesandbox.io/p/sandbox/react-7pkgg?file=%2Fsrc%2Fstyles.css%3A61%2C1-67%2C2
 
 export default function SearchBar(){  
-  const { searchr, setSearchr, setRestaurantsResult } = useContext(InformContext)
+  const { searchr, setSearchr, setRestaurantsResult, userlocation, setMapCenter } = useContext(InformContext)
   // console.log(searchr)
   const Seekbar = () => {
     const [ value, setValue ] = useState(3);  
@@ -35,9 +35,12 @@ export default function SearchBar(){
       distance:searchr.distance,
       rating:searchr.rating,
       priceLevel:searchr.priceLevel,
-      latitude:25.0478592,    //searchr.lat
-      longitude:121.5234048,  //searchr.lng
+      latitude: userlocation.lat,
+      longitude: userlocation.lng,
+      // latitude: 25.0478592,
+      // longitude: 121.5234048,
     })
+    setMapCenter ({ lat: userlocation.lat, lng: userlocation.lng })
     setRestaurantsResult(Alldata.data)
   };
   return (

@@ -6,7 +6,9 @@ import StarRating from "./StarRating"
 import PriceLevel from "./PriceLevel"
 
 
+
 export default function RestaurantItem ({ id, search, api_key, name, isFavorite, img, address, price_level, rating, user_ratings_total, comment, openNow, location, onAdd, onDelete, onComment}){
+
     const { setfavoriteList, setMapCenter } = useContext(InformContext)
     const [postContent, setPostContent] = useState(comment);
     let item =""
@@ -47,6 +49,7 @@ export default function RestaurantItem ({ id, search, api_key, name, isFavorite,
     const handleEnter = () => {
         if (location) {
             setMapCenter({ lat: location.lat, lng: location.lng })
+            // mapRef.current.panTo({ lat: location.lat, lng: location.lng })
         }        
     }
     const handleChangeComment = async() => {
