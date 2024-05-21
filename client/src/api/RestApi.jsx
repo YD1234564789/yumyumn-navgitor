@@ -17,6 +17,7 @@ axiosInstance.interceptors.request.use(
   }
 );
 
+//我的最愛列表
 export const getFavorite = async () => {
   try {
     const res = await axiosInstance.get(`/favorites`);
@@ -28,6 +29,7 @@ export const getFavorite = async () => {
   }
 };
 
+//點清單裡的更多後，會顯示餐廳的更多內容
 export const ChosenRestaurant = async ( id ) => {
   try {
     const res = await axiosInstance.get(`/restaurants/${id}`);
@@ -38,6 +40,7 @@ export const ChosenRestaurant = async ( id ) => {
   }
 }
 
+//把搜尋的餐廳加入我的最愛
 export const LikeRestaurant = async ({ restaurantName, address, priceLevel, restaurantId, photo, location, userRatingsTotal,
   rating }) => {
   try {
@@ -51,6 +54,7 @@ export const LikeRestaurant = async ({ restaurantName, address, priceLevel, rest
   }
 };
 
+//把餐廳從我的最愛中移除
 export const UnlikeRestaurant = async ( restaurantId ) => {
   try {
     const res = await axiosInstance.delete(`/favorite/${restaurantId.restaurantId}`);
@@ -58,5 +62,16 @@ export const UnlikeRestaurant = async ( restaurantId ) => {
     return res.data;
   } catch (error) {
     console.error("[Get UnlikeRestaurant failed]: ", error.response.data.message);
+  }
+};
+
+//修改備註
+export const ChangeComment = async ( {restaurantId, comment} ) => {
+  try {
+    const res = await axiosInstance.post(`/comments/${restaurantId}`,{comment});
+    console.log("RestApi.js 裡的 ChangeComment 回傳值: ", res.data);
+    return res.data;
+  } catch (error) {
+    console.error("[Get ChangeComment failed]: ", error.response.data.message);
   }
 };
