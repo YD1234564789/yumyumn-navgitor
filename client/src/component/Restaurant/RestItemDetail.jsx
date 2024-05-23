@@ -1,6 +1,6 @@
-import Comments from "./Comment";
-import StarRating from "./StarRating"
-import PriceLevel from "./PriceLevel"
+import Comments from "../Comment";
+import StarRating from "../StarRating"
+import PriceLevel from "../PriceLevel"
 
 export default function RestItemDetail ({id, api_key, data=[], search}) {
     function openHour() {
