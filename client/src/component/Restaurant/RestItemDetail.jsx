@@ -19,13 +19,13 @@ export default function RestItemDetail ({id, api_key, data=[], search}) {
                 if (photo === data.photos[0]){
                     return (
                         <div className="carousel-item active">
-                            <img src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=450&photo_reference=${photo.photo_reference}&key=${api_key}`} className="d-block w-100" alt="..." />
+                            <img src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photo_reference=${photo.photo_reference}&key=${api_key}`} className="d-block w-100" alt="..." />
                         </div>
                     )
                 }else{
                     return (
                         <div className="carousel-item">
-                            <img src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=450&photo_reference=${photo.photo_reference}&key=${api_key}`} className="d-block w-100" alt="..." />
+                            <img src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&photo_reference=${photo.photo_reference}&key=${api_key}`} className="d-block w-100" alt="..." />
                         </div>
                     )
                 }    
