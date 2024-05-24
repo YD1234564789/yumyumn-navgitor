@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import RangeSlider from 'react-bootstrap-range-slider';
 import { InformContext } from "../context/InformContext";
 import { SearchApi } from '../api/SearchApi';
@@ -10,18 +10,14 @@ import { SearchApi } from '../api/SearchApi';
 
 export default function SearchBar(){  
   const { searchr, setSearchr, setRestaurantsResult, userlocation, setMapCenter } = useContext(InformContext)
-  // console.log(searchr)
+
   const Seekbar = () => {
-    const [ value, setValue ] = useState(3);  
     return (
       <div className='range_slider'>
         <RangeSlider
-          value={value}
+          value={searchr.priceLevel}
           onChange={changeEvent => {
-            setValue(changeEvent.target.value)
-            console.log(value)
-            // 註解起來就能滑動，可能兩個不能一起放
-            // setSearchr({ ...searchr, priceLevel:changeEvent.target.value})
+            setSearchr({ ...searchr, priceLevel:changeEvent.target.value})
           }}
           step={1} min={1} max={5}
           bsPrefix='bar'
@@ -29,6 +25,7 @@ export default function SearchBar(){
       </div>
     );  
   };
+  
   const handleClick = async () => { 
     const Alldata= await SearchApi({
       type:searchr.type,
@@ -42,6 +39,25 @@ export default function SearchBar(){
     })
     setMapCenter ({ lat: userlocation.lat, lng: userlocation.lng })
     setRestaurantsResult(Alldata.data)
+    switch (searchr.distance) {
+      case "100":
+        setSearchr({ ...searchr, zoom:16})
+        break;
+      case "300":
+        setSearchr({ ...searchr, zoom:15.5})
+        break;
+      case "600":
+        setSearchr({ ...searchr, zoom:15})
+          break;
+      case "1000":
+        setSearchr({ ...searchr, zoom:15})
+          break;
+      case "3000":
+        setSearchr({ ...searchr, zoom:14})
+          break;
+      default:
+        return;
+    }
   };
   return (
     <div id="filterForm">

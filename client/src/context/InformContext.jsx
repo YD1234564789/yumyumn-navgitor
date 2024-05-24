@@ -8,7 +8,7 @@ export function InformContextProvider({children}){
   const [userlocation, setUserlocation] = useState({lat: 23.553118, lng: 121.0211024})
 
   //搜尋條件
-  const [searchr, setSearchr] = useState({type:"" , distance:"100", rating:"1",priceLevel:"3", lat:userlocation.lat, lng:userlocation.lng })
+  const [searchr, setSearchr] = useState({type:"" , distance:"100", rating:"1",priceLevel:3, lat:userlocation.lat, lng:userlocation.lng, zoom:7 })
 
   //搜尋結果
   const [restaurantsResult, setRestaurantsResult] = useState ([])

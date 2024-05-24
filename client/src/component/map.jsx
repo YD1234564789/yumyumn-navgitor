@@ -13,7 +13,6 @@ export default function MapConstructor(){
     const [zoom, setZoom] = useState(7)
     const { userlocation, setUserlocation, mapCenter, setMapCenter, restaurantsResult, searchr } = useContext(InformContext)
     const [selectedMarker, setSelectedMarker] = useState("");
-
     useEffect(() => {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
@@ -33,25 +32,7 @@ export default function MapConstructor(){
     }, []);
 
     useEffect(() => {
-        switch (searchr.distance) {
-            case "100":
-                setZoom(16);
-                break;
-            case "300":
-                setZoom(15.5);
-                break;
-            case "600":
-                setZoom(15);
-                break;
-            case "1000":
-                setZoom(15);
-                break;
-            case "3000":
-                setZoom(14);
-                break;
-            default:
-                return;
-        }
+        setZoom(searchr.zoom)
     }, [restaurantsResult]);
 
     const YOUR_API_KEY=process.env.REACT_APP_GOOGLE_MAPS_KEY
@@ -73,31 +54,42 @@ export default function MapConstructor(){
             console.error('Geolocation is not supported by this browser.');
         }
     };
-
-    const restaurants = () => {
-        if (restaurantsResult) {
-            const restaurant = restaurantsResult.map(restaurant => {
-                return (
-                    <div key={restaurant.place_id} id={restaurant.place_id} search="true">
-                        <Marker position={restaurant.geometry.location}
-                        onClick={()=>{
-                            setSelectedMarker(restaurant)
-                            console.log('restaurant', restaurant)
-                            console.log("mapCenter", mapCenter)
-                            console.log("selectedMarker", selectedMarker)
-                        }}
-                        />
-                    </div> 
-                )
-            })
-
-            return restaurant
-        } else {
+    const CreateInfo = () =>{
+        if (selectedMarker==="marker") {
+            return(
+                <InfoWindow
+                    position={userlocation}
+                    options={{
+                        pixelOffset: new window.google.maps.Size(0, -40),
+                    }}
+                >
+                    <div>
+                        <p>我的位置</p>
+                        <button onClick={() => setSelectedMarker("")}>close</button>
+                    </div>
+                </InfoWindow>
+            )
+        }else if (selectedMarker){
+            return(
+                <InfoWindow
+                    position={selectedMarker.geometry.location}
+                    options={{
+                        pixelOffset: new window.google.maps.Size(0, -40),
+                    }}
+                >
+                    <div>
+                        <h5>店名：{selectedMarker.name}</h5>
+                        <div>地址：{selectedMarker.vicinity}</div>
+                        <div className="d-flex">{selectedMarker.rating}{StarRating(selectedMarker.rating)}({selectedMarker.user_ratings_total}則評論)。{PriceLevel(selectedMarker.price_level)}</div>          
+                        <button onClick={() => setSelectedMarker("")}>close</button>
+                    </div>
+                </InfoWindow>
+            )
+        }else{
             return
         }
     }
 
-    
     return isLoaded && (
         <div id="map-container">
             <GoogleMap
@@ -107,33 +99,39 @@ export default function MapConstructor(){
             >
                 <Marker 
                     position={mapCenter} 
-                    onClick={() => {
-       
-                    // 我的位置的infowindow接收不了格式
-                    setSelectedMarker(mapCenter)
-                }} />
-                {restaurants()}
-                {selectedMarker && (
-                    <InfoWindow
-                        position={selectedMarker.geometry.location === userlocation ? userlocation : selectedMarker.geometry.location}
-                        options={{pixelOffset: new window.google.maps.Size(0, -40)}}
-                        onCloseClick={()=> setSelectedMarker(null)}>
-                        <div>
-                            {selectedMarker.geometry.location === userlocation ?(
-                                <div>我的位置</div>
-                            ):(
-                                <>
-                                <h5>店名：{selectedMarker.name}</h5>
-                                <div>地址：{selectedMarker.vicinity}</div>
-                                <div className="d-flex">{selectedMarker.rating}{StarRating(selectedMarker.rating)}({selectedMarker.user_ratings_total}則評論)。{PriceLevel(selectedMarker.price_level)}</div>
-                                </>
-                            )}
+                    onClick={() => {       
+                        setSelectedMarker(mapCenter)
+                }} />            
+                <div key="myplace">
+                    <Marker
+                        position={userlocation}
+                        onClick={() => {
+                            if(selectedMarker){
+                                setSelectedMarker("")
+                            }else{
+                                setSelectedMarker("marker");
+                            }                            
+                        }}
+                    />
+                </div>
+                {restaurantsResult.map((marker) => {
+                    return (
+                        <div key={marker.place_id}>
+                            <Marker
+                            position={marker.geometry.location}
+                            onClick={() => {
+                                if(selectedMarker){
+                                    setSelectedMarker("")
+                                }else{
+                                    setSelectedMarker(marker);
+                                }  
+                            }}
+                            />
                         </div>
-                    </InfoWindow>
-                )}
-                <button className="reload" onClick={handleCenterMapToUserLocation}>
-                    我的位置
-                </button>
+                    );
+                })}
+                {CreateInfo()}
+                <button className="reload" onClick={handleCenterMapToUserLocation}>我的位置</button>
             </GoogleMap>
         </div>
     ) 
