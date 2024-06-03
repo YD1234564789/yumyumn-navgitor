@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import RangeSlider from 'react-bootstrap-range-slider';
-import { InformContext } from "../context/InformContext";
-import { SearchApi } from '../api/SearchApi';
+import { InformContext } from "../../context/InformContext";
+import { SearchApi } from '../../api/SearchApi';
 
 //react-bootstrap-range-slider website
 //https://www.npmjs.com/package/react-bootstrap-range-slider

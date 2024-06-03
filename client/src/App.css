@@ -23,6 +23,11 @@ body {
     width:62px;
   }
 }
+.form-login{
+  .google-log{
+    margin-right:7px;
+  }
+}
 #map{
   height: 600px;
   border-radius: 5px;

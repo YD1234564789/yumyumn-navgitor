@@ -16,8 +16,13 @@ export function AuthContextProvider({children}){
 //無認證跳到登入頁面，有認證維持當下頁面
 export function RequireAuth ({children, auth}){
     let location = useLocation();
+    const path = useLocation().pathname
     if (!auth) {
-      return <Navigate to="/login" state={{ from: location }} replace />;
+      if (path === "/signup"){
+        return children
+      }else{
+        return <Navigate to="/login" state={{ from: location }} replace />;
+      }      
     }else{
       return children
     }     
@@ -36,5 +41,19 @@ export const login = async ({ email, password }) => {
     return data;
   } catch (error) {
     console.error('[Login Failed]:', error.response.data);
+  }
+};
+
+export const signup = async ({ name, email, password, passwordCheck }) => {
+  try {
+    const { data } = await axios.post(`/signup`, {
+      name,
+      email,
+      password,
+      passwordCheck,
+    });
+    return data;
+  } catch (error) {
+    console.error('[Signup Failed]:', error.response.data);
   }
 };

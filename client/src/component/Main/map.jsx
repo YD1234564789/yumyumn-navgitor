@@ -1,6 +1,6 @@
 import { GoogleMap,InfoWindow, Marker, useJsApiLoader } from "@react-google-maps/api"
 import { useState, useEffect, useContext } from "react";
-import { InformContext } from "../context/InformContext";
+import { InformContext } from "../../context/InformContext";
 import StarRating from "./StarRating"
 import PriceLevel from "./PriceLevel"
 
