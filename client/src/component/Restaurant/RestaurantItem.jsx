@@ -2,8 +2,8 @@ import { useState, useContext } from "react";
 import { ChosenRestaurant, LikeRestaurant, UnlikeRestaurant, ChangeComment } from "../../api/RestApi";
 import { InformContext } from "../../context/InformContext";
 import RestItemDetail from "./RestItemDetail";
-import StarRating from "../StarRating"
-import PriceLevel from "../PriceLevel"
+import StarRating from "../Main/StarRating"
+import PriceLevel from "../Main/PriceLevel"
 
 
 

@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { getFavorite } from "../api/RestApi";
 import { InformContext } from "../context/InformContext";
 import RestaurantItem from "./Restaurant/RestaurantItem";
-import MapConstructor from "./map";
+import MapConstructor from "./Main/map";
 
 export default function MainContainer(){
     const { restaurantsResult, setRestaurantsResult } = useContext(InformContext)

@@ -1,28 +1,34 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useContext } from "react";
 import logo from '../image/logot.png';
-import SearchBar from './SearchBar';
+import SearchBar from './Main/SearchBar';
+import { AuthContext } from '../api/auth';
 
 export default function Header() {
+  const {  setAuth } = useContext( AuthContext )
   const path = useLocation().pathname
   const navigate = useNavigate();
   const handleClick = () => {
     localStorage.clear()
-    navigate('/login')
+    setAuth("")
+    if ( path === "/login"){
+      navigate('/signup')
+    }else{
+      navigate('/login')
+    }
   }
   let content = ""
   let search = ""
   if ( path === "/login") {
-    content = <button className="btn btn-outline-secondary btn-sm" >註冊</button>
+    content = <button className="btn btn-outline-secondary btn-sm" onClick={handleClick} >註冊</button>
+    search = ""
+  }else if(path === "/signup"){
+    content = <button className="btn btn-outline-secondary btn-sm" onClick={handleClick} >返回</button>
     search = ""
   }else{
-    /*
-    <SearchBar />
-    <button className="btn btn-outline-secondary btn-sm ">{content}</button>
-    */
     content = <button className="btn btn-outline-secondary btn-sm" onClick={handleClick} >登出</button>
     search= <SearchBar />
   }
-
   return(
     <div id="header">        
         <nav className="navbar d-flex justify-content-between" >    
