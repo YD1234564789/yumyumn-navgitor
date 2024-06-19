@@ -63,10 +63,7 @@ export default function MapConstructor(){
                         pixelOffset: new window.google.maps.Size(0, -40),
                     }}
                 >
-                    <div>
-                        <p>我的位置</p>
-                        <button onClick={() => setSelectedMarker("")}>close</button>
-                    </div>
+                    <div>我的位置</div>
                 </InfoWindow>
             )
         }else if (selectedMarker){
@@ -81,7 +78,6 @@ export default function MapConstructor(){
                         <h5>店名：{selectedMarker.name}</h5>
                         <div>地址：{selectedMarker.vicinity}</div>
                         <div className="d-flex">{selectedMarker.rating}{StarRating(selectedMarker.rating)}({selectedMarker.user_ratings_total}則評論)。{PriceLevel(selectedMarker.price_level)}</div>          
-                        <button onClick={() => setSelectedMarker("")}>close</button>
                     </div>
                 </InfoWindow>
             )
