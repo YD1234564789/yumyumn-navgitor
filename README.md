@@ -11,9 +11,9 @@
 ## 開發工具
 
 前端：
-- html
-- css
-- javascript
+- HTML
+- CSS
+- Javascript
 - react 18.2.0
 - react-router-dom 6.22.1
 - react-google-maps/api 2.19.3
