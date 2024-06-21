@@ -92,7 +92,6 @@ export default function RestaurantItem ({ id, search, api_key, name, isFavorite,
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => setPostContent(comment)} >取消</button>
                                 <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => {
-                                    console.log(id, postContent)
                                     handleChangeComment()
                                 }} >確定修改</button>
                             </div>

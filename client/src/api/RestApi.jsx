@@ -21,7 +21,7 @@ axiosInstance.interceptors.request.use(
 export const getFavorite = async () => {
   try {
     const res = await axiosInstance.get(`/favorites`);
-    console.log("RestApi.js 裡的 getFavorite 回傳值: ", res.data);
+    // console.log("RestApi.js 裡的 getFavorite 回傳值: ", res.data);
 
     return res.data;
   } catch (error) {
@@ -33,7 +33,7 @@ export const getFavorite = async () => {
 export const ChosenRestaurant = async ( id ) => {
   try {
     const res = await axiosInstance.get(`/restaurants/${id}`);
-    console.log("RestApi.js 裡的 ChosenRestaurant 回傳值: ", res.data);
+    // console.log("RestApi.js 裡的 ChosenRestaurant 回傳值: ", res.data);
     return res.data;
   } catch (error) {
     console.error("[Get ChosenRestaurant failed]: ", error.response.data.message);
@@ -47,7 +47,7 @@ export const LikeRestaurant = async ({ restaurantName, address, priceLevel, rest
     const res = await axiosInstance.post(`/favorite`, {
       restaurantName, address, priceLevel, restaurantId, photo, location, userRatingsTotal, rating
     });
-    console.log("RestApi.js 裡的 LikeRestaurant 回傳值: ", res.data);
+    // console.log("RestApi.js 裡的 LikeRestaurant 回傳值: ", res.data);
     return res.data;
   } catch (error) {
     console.error("[Get LikeRestaurant failed]: ", error.response.data.message);
@@ -58,7 +58,7 @@ export const LikeRestaurant = async ({ restaurantName, address, priceLevel, rest
 export const UnlikeRestaurant = async ( restaurantId ) => {
   try {
     const res = await axiosInstance.delete(`/favorite/${restaurantId.restaurantId}`);
-    console.log("RestApi.js 裡的 UnlikeRestaurant 回傳值: ", res.data);
+    // console.log("RestApi.js 裡的 UnlikeRestaurant 回傳值: ", res.data);
     return res.data;
   } catch (error) {
     console.error("[Get UnlikeRestaurant failed]: ", error.response.data.message);
@@ -69,7 +69,7 @@ export const UnlikeRestaurant = async ( restaurantId ) => {
 export const ChangeComment = async ( {restaurantId, comment} ) => {
   try {
     const res = await axiosInstance.post(`/comments/${restaurantId}`,{comment});
-    console.log("RestApi.js 裡的 ChangeComment 回傳值: ", res.data);
+    // console.log("RestApi.js 裡的 ChangeComment 回傳值: ", res.data);
     return res.data;
   } catch (error) {
     console.error("[Get ChangeComment failed]: ", error.response.data.message);

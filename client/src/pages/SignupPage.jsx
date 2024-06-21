@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"
 import Header from '../component/header';
 import { signup } from "../api/auth"
 
@@ -7,17 +8,29 @@ export default function SignupPage() {
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
     const [ passwordCheck, setPasswordCheck ] = useState('');
+    const navigate = useNavigate()
+
     const handleClick = async () => {
-        if (email.length === 0 || email.length === 0 || password.length === 0 ) {
+        if (name.length === 0 || email.length === 0 || password.length === 0 || passwordCheck.length === 0 ) {
+            alert('所有欄位都是必填的')
             return;
-        }else{
-            await signup({
-                name,
-                email,
-                password,
-                passwordCheck,
-            });
-            return;
+        } else {
+            try {
+                const response = await signup({
+                    name,
+                    email,
+                    password,
+                    passwordCheck,
+                });
+                if (response.status === 'success') {
+                    alert(response.message)
+                    navigate('/login')
+                } else {
+                    alert('註冊失敗，請稍後再試')
+                }
+            } catch (error) {
+                console.log('註冊失敗', error)
+            }
         }
     };
 
@@ -44,8 +57,8 @@ export default function SignupPage() {
                                 <input className="form-control rounded-pill bg-light" id="password" type="password" name="password" onChange={(passwordInput) => setPassword(passwordInput.target.value)} required="" />
                             </div>
                             <div className="mb-4">
-                                <label className="form-label px-3 text-muted" htmlFor="password">確認密碼</label>
-                                <input className="form-control rounded-pill bg-light" id="password" type="password" name="passwordCheck" onChange={(passwordCheckInput) => setPasswordCheck(passwordCheckInput.target.value)} required="" />
+                                <label className="form-label px-3 text-muted" htmlFor="passwordCheck">確認密碼</label>
+                                <input className="form-control rounded-pill bg-light" id="passwordCheck" type="password" name="passwordCheck" onChange={(passwordCheckInput) => setPasswordCheck(passwordCheckInput.target.value)} required="" />
                             </div>
                             <div className="d-grid gap-2 mb-4 ">
                                 <button className="btn btn-primary btn-block fw-bold rounded-pill" onClick={handleClick}>提交</button>

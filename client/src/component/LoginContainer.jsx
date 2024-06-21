@@ -47,7 +47,7 @@ export default function LoginContainer() {
                         </div>
                         <hr />
                         <div className="text-center">
-                            <a href="/auth/google" className="btn btn-secondary btn-block btn-sm google-log">Google Login</a>
+                            {/* <a href="/auth/google" className="btn btn-secondary btn-block btn-sm google-log">Google Login</a> */}
                             <a href="/signup" className="btn btn-outline-secondary btn-sm fw-bold">註冊</a>
                         </div>
                     </div>
