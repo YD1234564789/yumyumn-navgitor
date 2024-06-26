@@ -12,7 +12,7 @@ Desktop.ini
 node_modules
 *.log
 *.gz
-.env4
+.env
 
 # docker
 build
