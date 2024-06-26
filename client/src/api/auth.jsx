@@ -1,7 +1,7 @@
 import { useState, createContext } from "react"
 import { Navigate, useLocation } from "react-router-dom";
 import axios from 'axios';
-
+axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:5000'
 export const AuthContext = createContext(0)
 
 export function AuthContextProvider({children}){  
@@ -30,17 +30,20 @@ export function RequireAuth ({children, auth}){
 
 export const login = async ({ email, password }) => {
   try {
-    const { data } = await axios.post(`/login`, {
+    const response = await axios.post(`/login`, {
       email,
       password,
-    });
-    const { token } = data.data;
-    if (token) {
-      return { success: true, ...data.data };
+    }); 
+    const { token } = response.data.data
+    if (token) {  
+      return { success: true, token}
+    } else {
+      console.error('[Login Failed]: Unexpected response structure', response.data);
+      return { success: false, message:'Unexpected response structure' };
     }
-    return data;
   } catch (error) {
-    console.error('[Login Failed]:', error.response.data);
+    console.error('[Login Failed]:', error.response?.data || error.message);
+    return { success: false, message: 'An login error occurred' };
   }
 };
 

@@ -12,4 +12,9 @@ Desktop.ini
 node_modules
 *.log
 *.gz
-.env
+.env4
+
+# docker
+build
+.dockerignore
+Dockerfile

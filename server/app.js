@@ -1,7 +1,7 @@
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
-
+const cors = require('cors')
 const express = require('express')
 const session = require('express-session')
 const methodOverride = require('method-override')
@@ -30,6 +30,8 @@ app.use((req, res, next) => {
   next()
 })
 
+// 跨站設置
+app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:3000'}))
 // 增加可覆蓋的PUT DELETE方法
 app.use(methodOverride('_method'))
 app.use(routes)
