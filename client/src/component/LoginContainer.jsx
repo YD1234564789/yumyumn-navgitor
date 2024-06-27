@@ -1,5 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import { signInWithPopup } from "firebase/auth"
+import { googleAuth, provider } from "../config/firebase";
 import { login } from "../api/auth"
 import { AuthContext } from "../api/auth";
 
@@ -7,7 +9,7 @@ export default function LoginContainer() {
     const { auth, setAuth } = useContext( AuthContext )
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
-    const [error, setError] = useState('')
+    const [ error, setError ] = useState('')
     const navigate = useNavigate();
 
     const handleClick = async () => {
@@ -29,16 +31,19 @@ export default function LoginContainer() {
             }
         } catch (error) {
             console.error('Login error:', error);
-            setError('登入過程中發生錯誤，請稍後再試');
+            setError('帳號或密碼錯誤，請重新輸入');
         }
     };
-
+    const handleClickGoogle=async() =>{
+        const result = await signInWithPopup(googleAuth, provider)
+        localStorage.setItem('token', result.user.accessToken);
+        setAuth(result.user.accessToken) 
+    }
     useEffect(() => {
         if (auth) {
-            navigate('/main');
+            navigate('/');
         }
     }, [localStorage.token])
-
     return(
         <div className="container">
             <div className="row justify-content-center align-items-center">
@@ -51,6 +56,7 @@ export default function LoginContainer() {
                             <label className="form-label px-3 text-muted" htmlFor="email">信箱</label>
                             <input className="form-control rounded-pill bg-light" id="email" type="text" name="email" placeholder="name@mail.com" onChange={(emailInput) => setEmail(emailInput.target.value)} required="" />
                         </div>
+                        <p>{error}</p>
                         <div className="mb-4">
                             <label className="form-label px-3 text-muted" htmlFor="password">密碼</label>
                             <input className="form-control rounded-pill bg-light" id="password" type="password" name="password" onChange={(passwordInput) => setPassword(passwordInput.target.value)} required="" />
@@ -60,7 +66,9 @@ export default function LoginContainer() {
                         </div>
                         <hr />
                         <div className="text-center">
-                            {/* <a href="/auth/google" className="btn btn-secondary btn-block btn-sm google-log">Google Login</a> */}
+
+                            {/* <button className="btn btn-secondary btn-block btn-sm google-log" onClick={handleClickGoogle}>Google Login</button> */}
+
                             <a href="/signup" className="btn btn-outline-secondary btn-sm fw-bold">註冊</a>
                         </div>
                     </div>
