@@ -1,5 +1,5 @@
 import { useState, createContext } from "react"
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import axios from 'axios';
 
 export const AuthContext = createContext(0)
@@ -14,18 +14,8 @@ export function AuthContextProvider({children}){
 }
 
 //無認證跳到登入頁面，有認證維持當下頁面
-export function RequireAuth ({children, auth}){
-    let location = useLocation();
-    const path = useLocation().pathname
-    if (!auth) {
-      if (path === "/signup"){
-        return children
-      }else{
-        return <Navigate to="/login" state={{ from: location }} replace />;
-      }      
-    }else{
-      return children
-    }     
+export function RequireAuth ({auth}){
+  return auth? <Outlet /> : <Navigate to="/login" />
 }
 
 export const login = async ({ email, password }) => {

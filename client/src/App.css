@@ -7,6 +7,7 @@ body {
   background-size: cover;
   background-position: center center;
   height: 100vh; 
+  min-width: 1300px;
 }
 .navbar{
   margin:auto 15px;
@@ -165,7 +166,7 @@ body {
 
 .comment{
   display:grid;
-  grid-template-columns: 48px 385px 48px;
+  grid-template-columns: 48px 305px 48px;
   i{
     margin-left:6px;
   }
