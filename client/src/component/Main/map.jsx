@@ -13,22 +13,23 @@ export default function MapConstructor(){
     const [zoom, setZoom] = useState(7)
     const { userlocation, setUserlocation, mapCenter, setMapCenter, restaurantsResult, searchr } = useContext(InformContext)
     const [selectedMarker, setSelectedMarker] = useState("");
+
     useEffect(() => {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const { latitude, longitude } = position.coords;
-                setMapCenter({ lat: latitude, lng: longitude });
-                setUserlocation({ lat: latitude, lng: longitude });
-                setZoom(17)
-            },
-            (error) => {
-                console.error('Error getting user location:', error);
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        setMapCenter({ lat: latitude, lng: longitude });
+                        setUserlocation({ lat: latitude, lng: longitude });
+                        setZoom(17)
+                    },
+                    (error) => {
+                        console.error('Error getting user location:', error);
+                    }
+                );
+            } else {
+                console.error('Geolocation is not supported by this browser.');
             }
-          );
-        } else {
-          console.error('Geolocation is not supported by this browser.');
-        }
     }, []);
 
     useEffect(() => {
@@ -63,10 +64,7 @@ export default function MapConstructor(){
                         pixelOffset: new window.google.maps.Size(0, -40),
                     }}
                 >
-                    <div>
-                        <p>我的位置</p>
-                        <button onClick={() => setSelectedMarker("")}>close</button>
-                    </div>
+                    <h5>我的位置</h5>
                 </InfoWindow>
             )
         }else if (selectedMarker){
@@ -78,15 +76,14 @@ export default function MapConstructor(){
                     }}
                 >
                     <div>
-                        <h5>店名：{selectedMarker.name}</h5>
-                        <div>地址：{selectedMarker.vicinity}</div>
+                        <h5>{selectedMarker.name}</h5>
+                        <div>{selectedMarker.vicinity}</div>
                         <div className="d-flex">{selectedMarker.rating}{StarRating(selectedMarker.rating)}({selectedMarker.user_ratings_total}則評論)。{PriceLevel(selectedMarker.price_level)}</div>          
-                        <button onClick={() => setSelectedMarker("")}>close</button>
                     </div>
                 </InfoWindow>
             )
         }else{
-            return
+            return null
         }
     }
 
@@ -114,7 +111,7 @@ export default function MapConstructor(){
                         }}
                     />
                 </div>
-                {restaurantsResult.map((marker) => {
+                {restaurantsResult && restaurantsResult.map((marker) => {
                     return (
                         <div key={marker.place_id}>
                             <Marker

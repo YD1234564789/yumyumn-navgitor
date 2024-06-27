@@ -9,19 +9,30 @@ export default function LoginContainer() {
     const { auth, setAuth } = useContext( AuthContext )
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
+    const [ error, setError ] = useState('')
     const navigate = useNavigate();
+
     const handleClick = async () => {
         if (email.length === 0 || password.length === 0) {
+            setError('請輸入電子郵件和密碼');
             return;
         }
-        const { success, token } = await login({
-            email,
-            password,
-        });
-        if (success) {
-            localStorage.setItem('token', token);
-            setAuth(token)            
-        }        
+        try {
+            const { success, token } = await login({
+                email,
+                password,
+            });
+            if (success) {
+                localStorage.setItem('token', token);
+                setAuth(token)
+                setError("")
+            } else {
+                setError('登入失敗，請重試');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            setError('帳號或密碼錯誤，請重新輸入');
+        }
     };
     const handleClickGoogle=async() =>{
         const result = await signInWithPopup(googleAuth, provider)
@@ -32,7 +43,7 @@ export default function LoginContainer() {
         if (auth) {
             navigate('/');
         }
-    },[localStorage.token])
+    }, [localStorage.token])
     return(
         <div className="container">
             <div className="row justify-content-center align-items-center">
@@ -45,6 +56,7 @@ export default function LoginContainer() {
                             <label className="form-label px-3 text-muted" htmlFor="email">信箱</label>
                             <input className="form-control rounded-pill bg-light" id="email" type="text" name="email" placeholder="name@mail.com" onChange={(emailInput) => setEmail(emailInput.target.value)} required="" />
                         </div>
+                        <p>{error}</p>
                         <div className="mb-4">
                             <label className="form-label px-3 text-muted" htmlFor="password">密碼</label>
                             <input className="form-control rounded-pill bg-light" id="password" type="password" name="password" onChange={(passwordInput) => setPassword(passwordInput.target.value)} required="" />
@@ -54,7 +66,9 @@ export default function LoginContainer() {
                         </div>
                         <hr />
                         <div className="text-center">
-                        
+
+                            {/* <button className="btn btn-secondary btn-block btn-sm google-log" onClick={handleClickGoogle}>Google Login</button> */}
+
                             <a href="/signup" className="btn btn-outline-secondary btn-sm fw-bold">註冊</a>
                         </div>
                     </div>
@@ -63,6 +77,3 @@ export default function LoginContainer() {
         </div>
     )
 }
-
-//google登入按鈕，直接貼在57行就可以登入
-//<button className="btn btn-secondary btn-block btn-sm google-log" onClick={handleClickGoogle}>Google Login</button>

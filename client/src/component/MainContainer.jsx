@@ -70,7 +70,7 @@ export default function MainContainer(){
             })
             return result
         }else{
-            return
+            return <h4>尚未搜尋或無結果</h4>
         }
     }
     //記得加自己的備註

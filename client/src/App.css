@@ -114,8 +114,11 @@ body {
     }
 }
 .carousel-item{
-  height: 250px;
-  overflow: hidden;
+  height: 300px;
+  img{
+    height: 100%;
+    object-fit: cover;
+  }
 }
 .openNow {
   color: green
@@ -168,6 +171,6 @@ body {
   display:grid;
   grid-template-columns: 48px 305px 48px;
   i{
-    margin-left:6px;
+    margin-right:6px;
   }
 }

@@ -13,3 +13,8 @@ node_modules
 *.log
 *.gz
 .env
+
+# docker
+build
+.dockerignore
+Dockerfile

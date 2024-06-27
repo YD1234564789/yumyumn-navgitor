@@ -26,20 +26,20 @@ const mapController = {
           } else {
             result.isFavorite = false
           }
-          const openNow = result.opening_hours.open_now? "營業中" : "已打烊"
+          const openNow = result.opening_hours?.open_now? "營業中" : "已打烊"
           return {...result, openNow}
         })
 
         if (updateResults.length > 0) {
-          res.json({ status: 'success', data: updateResults, message: '取得搜索結果！' })
+          return res.json({ status: 'success', data: updateResults, message: '取得搜索結果！' })
         } else {
-          res.json({ status: 'success', data: [], message: '該條件無搜索結果' })
+          return res.json({ status: 'success', data: [], message: '該條件無搜索結果' })
         }
       } else {
-        res.json({ status: results.status, data: results.results})
+        return res.json({ status: results.status, data: results.results})
       }
     } catch (err) {
-      console.error('無法與API取得資料', err)
+      console.error('無法取得資料或該條件無結果', err)
       next(err)
     }
   },

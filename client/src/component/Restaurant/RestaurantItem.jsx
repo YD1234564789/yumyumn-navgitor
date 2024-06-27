@@ -65,8 +65,8 @@ export default function RestaurantItem ({ id, search, api_key, name, isFavorite,
                 <div className="d-flex">
                     {rating}{StarRating(rating)}({user_ratings_total}則評論){PriceLevel(price_level)}
                 </div>
-                <div className={openNow === "營業中" ? 'openNow' : 'closeNow'}>{openNow}</div>
                 <div>{address}</div>
+                <div className={openNow === "營業中" ? 'openNow' : 'closeNow'}>{openNow}</div>
             </div>
     }else{
         item= 
@@ -74,26 +74,24 @@ export default function RestaurantItem ({ id, search, api_key, name, isFavorite,
                 <div className="d-flex">
                     {rating}{StarRating(rating)}({user_ratings_total}則評論){PriceLevel(price_level)}
                 </div>
-                <div>地址：{address}</div>
-                <div className="comment">
-                    備註：
-                    <div>{comment}</div>
+                <div>{address}</div>
+                <div className="comment d-flex align-items-center">
                     <i className="fa-regular fa-pen-to-square" data-bs-toggle="modal" data-bs-target={`#${id}Backdrop`}></i>
+                    {comment}
                 </div>
-                <div className="modal fade" id={`${id}Backdrop`} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div className="modal-dialog">
+                <div className="modal fade" id={`${id}Backdrop`} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">   
+                    <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h1 className="modal-title fs-5" id="staticBackdropLabel">留言修改</h1>
+                                <h1 className="modal-title fs-5" id="staticBackdropLabel">修改備註</h1>
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
-                                <textarea value={postContent} onChange={e => setPostContent(e.target.value)} />               
+                                <textarea className="form-control" value={postContent} onChange={e => setPostContent(e.target.value)} />               
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => setPostContent(comment)} >取消</button>
                                 <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => {
-                                    console.log(id, postContent)
                                     handleChangeComment()
                                 }} >確定修改</button>
                             </div>

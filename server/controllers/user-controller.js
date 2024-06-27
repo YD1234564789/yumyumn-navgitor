@@ -22,7 +22,7 @@ const userController = {
   signup: (req, res, next) => {
     const { name, email, password, passwordCheck } = req.body
     if (password !== passwordCheck) throw new Error('Passwords do not match!')
-    User.findOne({ email })
+    return User.findOne({ email })
       .then(user => {
         if (user) {
           console.log('User already exists.')
@@ -51,7 +51,7 @@ const userController = {
                 data: {
                   ...user
                 },
-                message: '註冊成功！'
+                message: '註冊成功！請再次登入'
               })
             })
             .catch(err => next(err))

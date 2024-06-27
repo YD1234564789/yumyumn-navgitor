@@ -1,5 +1,4 @@
 export default function RestDetailPhoto ( photos ) {
-    console.log('photos00000', photos)
 
     if (photos){
         photos.map ( photo => {
