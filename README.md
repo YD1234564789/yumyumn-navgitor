@@ -87,6 +87,7 @@ http://localhost:3000/
 - react-google-maps/api 2.19.3
 - Bootstrap 5.3.3
 - googlemaps/react-wrapper 1.1.35
+- firebase
 
 後端：
 - express 4.18.2
